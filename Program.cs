@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-
 using static System.Console;
 using static System.Convert;
 
@@ -15,9 +14,9 @@ static void RunExerciseOne()
 static void RunExerciseTwo()
 {
     Write("Please enter your first name: ");
-    string firstName = ReadLine();
+    string? firstName = ReadLine();
     Write("Please enter your last name: ");
-    string lastName = ReadLine();
+    string? lastName = ReadLine();
     WriteLine("Hello {0} {1}! Have a nice day!", firstName, lastName);
     ReadKey();
 }
@@ -32,7 +31,7 @@ static void RunExerciseThree()
     {
         n = ToInt32(ReadLine());
         k = ToInt32(ReadLine());
-        if (k == n + 1)
+        if (k == n + 1 || k == n - 1)
             WriteLine("Consecutive");
         else
             WriteLine("Not consecutive");
@@ -43,6 +42,7 @@ static void RunExerciseThree()
     }
     ReadKey();
 }
+
 static void RunExerciseFour()
 {
     IFormatProvider sweCulture =
@@ -137,7 +137,6 @@ static void RunExerciseEight()
     WriteLine(string.Join(" ", evenList));
     WriteLine("List of odd elements: ");
     WriteLine(string.Join(" ", oddList));
-
     ReadKey();
 }
 
@@ -370,7 +369,7 @@ static void RunExerciseEighteen()
     // Random randomNumber = new Random();
     Random randomNumber = new();
     int secretNumber = randomNumber.Next(10); //sets the range from 0 to 9
-    string answer = "yes";
+    string? answer = "yes";
     do
     {
         Write("Guess a number from 0 to 9: ");
@@ -402,11 +401,9 @@ static void RunExerciseNineteen()
     // char star = '*';
 
     int topLayerOfStars = 5;
-    int whiteSpaces = 4;
-
     for (int i = topLayerOfStars; i > 0; i--) //should iterate to the number of stars in the top layer
     {
-        for (int j = 0; j < topLayerOfStars - i; j++) //should start at 0 and increase to number of whitespaces
+        for (int j = 0; j < topLayerOfStars - i; j++) //should start at 0 and increase to number (topLayerOfStars - i) 
         {
             Write(" ");
         }
@@ -446,35 +443,168 @@ static void RunExerciseTwenty()
     ReadKey();
 }
 
-static void RunExerciseTwentyOne(int fibNum)
+int RunExerciseTwentyOne(int fibNum, int fibStart = 0)
 {
     /*Exercise 21 (Optional) 
+
     Write a program to print the Fibonacci series */
+    //first call on its own method recursively until fibNum == 0 and then go back up to calculate the values consecutively.
+    //How to set a condition for this?
 
-    //recursion! The method will call itself by adding the value of the current method and the value of the method with currentNumber-1 until currentNumber == 0
+    if (fibNum < 1)
+    {
+        return fibNum;
+    }
+    else
 
-    // += ExerciseTwentyOne(fibNum - 2) + ExerciseTwentyOne(fibNum - 1);
-
-
-    //change return void to return int?
-    // Write(fibNum + " ");
-    // if (fibNum - 2 == 0)
-    //console output WriteLine(string.Join(" ", evenList)); is this needed?
-    // int[] array = { 1, 2, 3, 4, 5 };
-
-    // return;
-
-    // ReadKey();
+        return RunExerciseTwentyOne(fibNum - 1) + RunExerciseTwentyOne(fibNum - 2);
 }
 
-// ReadKey();
+static void RunExerciseTwentyTwo()
+{
+    Write("Insert the height of the triangle: ");
+    double height = ToDouble(ReadLine());
+    Write("Insert the width of the triangle: ");
+    double width = ToDouble(ReadLine());
+    WriteLine($"Area of the triangle is: {height * width / 2}");
+
+    ReadKey();
+}
+
+static void RunExerciseTwentyThree()
+{
+    //this exercise is about overloading methods. They must be defined in a separate class as they cannot be declared in the main function (or the functional equivalent).
+
+    double d1 = 1.75, d2 = 2.64, d3 = 3.91, d4 = 4.13;
+
+    WriteLine(ExerciseMethods.AddNumbers(d1, d2));
+    WriteLine(ExerciseMethods.AddNumbers(d1, d2, d3));
+    WriteLine(ExerciseMethods.AddNumbers(d1, d2, d3, d4));
+
+    ReadKey();
+}
+
+static void RunExerciseTwentyFour()
+{
+    int[] ex1 = { 1, 2, 3, 4, 5 }; //expected output: 5
+    int[] ex2 = { 1, 530202, -903, 3, -1, 86 }; //expected output: 530202
+    int[] ex3 = { 1, 23 * 23, -5303, 353, -1, 86 }; // expected output: 23*23  (529)
+
+    WriteLine(ExerciseMethods.GreatestNumber(ex1));
+    WriteLine(ExerciseMethods.GreatestNumber(ex2));
+    WriteLine(ExerciseMethods.GreatestNumber(ex3));
+}
+
+static void RunExerciseTwentyFive()
+{
+    Write("Insert number A: ");
+    double a = ToDouble(ReadLine());
+    Write("Insert number B: ");
+    double b = ToDouble(ReadLine());
+    WriteLine("Swapping....");
+    ExerciseMethods.SwapExercise25(a, b);
+    WriteLine($"Value A is still {a} outside the function and value B is still {b} outside the fuction.");
+
+    ReadKey();
+}
+
+static void RunExerciseTwentySix()
+{
+    Write("Insert number A: ");
+    double a = ToDouble(ReadLine());
+    Write("Insert number B: ");
+    double b = ToDouble(ReadLine());
+    WriteLine("Swapping....");
+
+    // double A = a, B = b;
+    // ExerciseMethods.SwapExercise26(a, b, out A, out B); //using out
+
+    ExerciseMethods.SwapExercise26(ref a, ref b);
+    WriteLine($"Value A is now also {a} outside the function and value B is now also {b} outside the fuction.");
+
+    ReadKey();
+}
+
+static void RunExerciseTwentySeven()
+{
+
+    //make another version by cutting the inputted string into 2 equal part (remove the middle if necessary, doesn't really matter) , reverse one and compare?
+
+    Write("Insert a string: ");
+    string? inputString = ReadLine();
+
+    //alt 1
+    // char[] inputCharArray = inputString.ToCharArray();
+    // int palindromeCount = 0;
+    // for (int i = 0; i < inputCharArray.Length / 2; i++)
+    // {
+    //     if (inputCharArray[i] == inputCharArray[^(i + 1)]) palindromeCount++;
+    // }
+    // if (palindromeCount == (inputCharArray.Length / 2)) WriteLine("The string is a palindrome!");
+    // else WriteLine("The string is *not* a palindrome!");
+
+    //alt 2
+    //this requires a proxy string
+    //use split instead and assign to a string[] and compare them when reversed?
+
+    string secondPart = inputString.Substring(0, inputString.Length / 2); //creates a new reference object out of the string - gives error
+    string firstPart = inputString.Substring(inputString.Length / 2);
+
+    // string[] splitString = inputString.Split(inputString.Length / 2);
+
+    if (firstPart == (string)secondPart.Reverse()) WriteLine("The string is a palindrome!");
+    else WriteLine("The string is *not* a palindrome!");
+
+    ReadKey();
+}
+
+static void RunExerciseTwentyEight()
+{
+    ReadKey();
+}
+
+static void RunExerciseTwentyNine()
+{
+    ReadKey();
+}
+
+static void RunExerciseThirty()
+{
+    ReadKey();
+}
+
+static void RunExerciseThirtyOne()
+{
+    ReadKey();
+}
+
+static void RunExerciseThirtyTwo()
+{
+    ReadKey();
+}
+
+static void RunExerciseThirtyThree()
+{
+    ReadKey();
+}
+
+static void RunExerciseThirtyFour()
+{
+    ReadKey();
+}
+
+static void RunExerciseThirtyFive()
+{
+    ReadKey();
+}
+
 bool keepAlive = true;
 while (keepAlive)
 {
     try
     {
         Write("Enter assignment number (or -1 to exit): ");
-        var assignmentChoice = int.Parse(ReadLine() ?? "");
+        var assignmentChoice = int.Parse(ReadLine() ?? ""); //?? is the null-coalescing operator, if the statement to its left equals null, the value to its right will be used
         ForegroundColor = ConsoleColor.Green;
         switch (assignmentChoice)
         {
@@ -538,37 +668,73 @@ while (keepAlive)
             case 20:
                 RunExerciseTwenty();
                 break;
-            // case 22:
-            //     RunExerciseTwentyTwo();
-            //     break;
-            // case 22:
-            //     RunExerciseTwentyThree();
-            //     break;
-            // case 23:
-            //     RunExerciseTwenty();
-            //     break;
-            // case 24:
-            //     RunExerciseTwenty();
-            //     break;
-            // case 25:
-            //     RunExerciseTwenty();
-            //     break;
-            // case 26:
-            //     RunExerciseTwenty();
-            //     break;
-            // case 27:
-            //     RunExerciseTwenty();
-            //     break;
-            // case 28:
-            //     RunExerciseTwenty();
-            //     break;
-            // case 29:
-            //     RunExerciseTwenty();
-            //     break;
+            case 21:
+
+                Write("How many digits of the fibonacci sequence do you want to compute?: ");
+                int fibonacciDigits = ToInt32(ReadLine());
+                WriteLine(RunExerciseTwentyOne(fibonacciDigits));
+                // RunExerciseTwentyOne(fibonacciDigits);
+
+                // int[] fibonacciArray = new int[fibonacciDigits];
+                // fibonacciArray[0] = 0;
+                // fibonacciArray[1] = 1;
+
+                //store in an array and output it with string.Join(" ", fibArray); instead? 
+                //use parse instead of Convert.To... ? 
+
+                //create a separate method for calculating the sequence and move this to the RunExerciseTwentyOne ?
+
+                ReadKey();
+                break;
+            case 22:
+                RunExerciseTwentyTwo();
+                break;
+            case 23:
+                RunExerciseTwentyThree();
+                break;
+            case 24:
+                RunExerciseTwentyFour();
+                ReadKey();
+                break;
+            case 25:
+                RunExerciseTwentyFive();
+                break;
+            case 26:
+                RunExerciseTwentySix();
+                break;
+            case 27:
+                RunExerciseTwentySeven();
+                break;
+            case 28:
+                RunExerciseTwentyEight();
+                break;
+            case 29:
+                RunExerciseTwentyNine();
+                break;
+            case 30:
+                RunExerciseTwentyNine();
+                break;
+            case 31:
+                RunExerciseTwentyNine();
+                break;
+            case 32:
+                RunExerciseTwentyNine();
+                break;
+            case 33:
+                RunExerciseTwentyNine();
+                break;
+            case 34:
+                RunExerciseTwentyNine();
+                break;
+            case 35:
+                RunExerciseTwentyNine();
+                break;
 
             case -1:
                 keepAlive = false;
                 break;
+
+
             default:
                 ForegroundColor = ConsoleColor.Red;
                 WriteLine("That is not a valid assignment number!");
@@ -587,3 +753,69 @@ while (keepAlive)
     }
 }
 
+public static class ExerciseMethods
+{
+    public static double AddNumbers(double one, double two)
+    {
+        return one + two;
+    }
+    public static double AddNumbers(double one, double two, double three)
+    {
+        return one + two + three;
+    }
+    public static double AddNumbers(double one, double two, double three, double four)
+    {
+        return one + two + three + four;
+    }
+
+    public static int GreatestNumber(int[] array)
+    {
+        //Alternative 1
+        return array.Max();
+
+        //Alternative 2
+        // Array.Sort(array);
+        // return array[array.Length - 1];
+
+        //Alternative 3
+        // int highestNumber = int.MinValue;
+        // foreach (int i in array)
+        // {
+        //     if (i > highestNumber) highestNumber = i;
+        // }
+        // return highestNumber;
+
+    }
+
+    public static void SwapExercise25(double a, double b)
+    {
+        double temp = b;
+        b = a;
+        a = temp;
+
+        WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
+    }
+
+    public static (double, double) SwapExercise26(ref double a, ref double b)
+    {
+        double temp = b;
+        b = a;
+        a = temp;
+        WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
+        (double, double) tuple = (a, b);
+        return tuple;
+    }
+
+    // public static void SwapExercise26(double a, double b, out double A, out double B) //using out instead
+    // {
+    //     double temp = b;
+    //     b = a;
+    //     a = temp;
+    //     A = a;
+    //     B = b;
+    //     WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
+    // }
+
+}
+
+//antingen subarray eller sort med linq eller bara vanlig sort och sen plocka ut första
