@@ -1,6 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System.Buffers;
 using static System.Console;
 using static System.Convert;
+using System.Diagnostics;
+using System.ComponentModel.Design;
+using System.Security.Cryptography.X509Certificates;
+using System.Globalization;
 
 static void RunExerciseOne()
 {
@@ -45,26 +49,40 @@ static void RunExerciseThree()
 
 static void RunExerciseFour()
 {
-    IFormatProvider sweCulture =
-    new System.Globalization.CultureInfo("sv-SE", true);
+    IFormatProvider sweCulture = new System.Globalization.CultureInfo("sv-SE", true);
 
-    DateTime today = DateTime.Now;
-    string[] todayLongDateFormat = today.GetDateTimeFormats('f'); //if no argument is given, it uses a default set of formats (which seems to be based on OS settings)
-    WriteLine("Today's date in the long format is: {0}", todayLongDateFormat);
-    WriteLine("\nAlternative (Swedish) date formats for today: ");
-    string[] todayDateVariants = today.GetDateTimeFormats(sweCulture); //if no argument is given, it uses a default set of formats
+    DateTime now = DateTime.Now;
 
-    foreach (string format in todayDateVariants.Distinct()) //.Distinct() added because of duplicates
+    //alt 1
+    WriteLine("Todays date in the short date format is: " + now.ToString("d")); //the format character d and D handle the formatting in a concise manner.
+    WriteLine("Today's date in the long date format is: " + now.ToString("D"));
+
+    //alt 2
+    // WriteLine("Todays date in the short date format is: " + now.ToShortDateString());
+    // WriteLine("Today's date in the long date format is: " + now.ToLongDateString());
+
+    WriteLine("Todays date in a mixed format is: " + now.ToString("yyyy-MMMM-dd"));
+
+    // DateTime today = DateTime.Today; //not really necessary for the purposes of this exercise
+
+    string[] todayTimeAndDatevariants = now.GetDateTimeFormats(sweCulture); //if no argument is given, it uses a default set of formats (which seems to be based on OS settings)
+    WriteLine("\nAll alternative (Swedish) date and time formats for today/now: ");
+    foreach (string format in todayTimeAndDatevariants.Distinct()) //.Distinct() added because of duplicates (last time I checked)
     {
         WriteLine(format);
     }
 
-    DateTime tomorrow = today.AddDays(1);
-    string[] tomorrowString = tomorrow.GetDateTimeFormats('d');
-    WriteLine("\nTomorrow's date in short format is: {0}", tomorrowString);
-    DateTime yesterday = today.AddDays(-1);
-    string[] yesterdayString = yesterday.GetDateTimeFormats('d');
-    WriteLine("Yesterday's date in short format is: {0}", yesterdayString);
+    //alt 1
+    WriteLine($"\nTomorrow's date in short format is: {now.AddDays(1).ToString("d")}");
+    WriteLine($"Yesterday's date in short format is: {now.AddDays(-1).ToString("d")}");
+
+    //alt2 
+    // DateTime tomorrow = now.AddDays(1);
+    // string[] tomorrowString = tomorrow.GetDateTimeFormats('d');
+    // WriteLine($"\nTomorrow's date in short format is: {tomorrowString}");
+    // DateTime yesterday = now.AddDays(-1);
+    // string[] yesterdayString = yesterday.GetDateTimeFormats('d');
+    // WriteLine($"Yesterday's date in short format is: {yesterdayString}");
 
     ReadKey();
 }
@@ -119,18 +137,18 @@ static void RunExerciseSeven()
 static void RunExerciseEight()
 {
     Random randomNumber = new Random();
-    int[] number = new int[20];
+    IList<int> randomIntegerList = new List<int>();
     for (int i = 0; i < 20; i++)
-    {
-        number[i] = randomNumber.Next();
-    }
-    List<int> evenList = new(number.Where(x => x % 2 == 0));
-    List<int> oddList = new(number.Where(x => x % 2 != 0));
+        randomIntegerList.Add(randomNumber.Next());
 
-    //An alternative would be: 
-    // foreach (int i in number)
+    IList<int> evenList = new List<int>(randomIntegerList.Where(x => x % 2 == 0));
+    IList<int> oddList = new List<int>(randomIntegerList.Except(evenList));
+    // IList<int> oddList = new List<int>(randomIntegerList.Where(x => x % 2 != 0));
+
+    // An alternative would be: 
+    // foreach (int i in randomIntegerList)
     //     if (i % 2 == 0) evenList.Add(i);
-    // foreach (int i in number)
+    // foreach (int i in randomIntegerList)
     //     if (i % 2 != 0) oddList.Add(i);
 
     WriteLine("List of even elements: ");
@@ -197,16 +215,17 @@ static void RunExerciseTwelve()
     DateTime now = DateTime.Now;
     int currentYear = now.Year;
     int inputYear;
+
     try
     {
         Write("Enter the current year:");
         inputYear = ToInt32(ReadLine());
 
+        // if (inputYear == currentYear)
         if (inputYear == currentYear)
             WriteLine("Correct");
         else
             WriteLine("Incorrect");
-
     }
 
     catch (FormatException) //Some additional validation, because why not.
@@ -366,7 +385,6 @@ static void RunExerciseSeventeen()
 static void RunExerciseEighteen()
 {
     int guessedNumber;
-    // Random randomNumber = new Random();
     Random randomNumber = new();
     int secretNumber = randomNumber.Next(10); //sets the range from 0 to 9
     string? answer = "yes";
@@ -528,58 +546,205 @@ static void RunExerciseTwentySix()
 static void RunExerciseTwentySeven()
 {
 
-    //make another version by cutting the inputted string into 2 equal part (remove the middle if necessary, doesn't really matter) , reverse one and compare?
-
     Write("Insert a string: ");
     string? inputString = ReadLine();
+    char[] inputCharArray = inputString.ToCharArray();
 
-    //alt 1
-    // char[] inputCharArray = inputString.ToCharArray();
-    // int palindromeCount = 0;
-    // for (int i = 0; i < inputCharArray.Length / 2; i++)
-    // {
-    //     if (inputCharArray[i] == inputCharArray[^(i + 1)]) palindromeCount++;
-    // }
-    // if (palindromeCount == (inputCharArray.Length / 2)) WriteLine("The string is a palindrome!");
-    // else WriteLine("The string is *not* a palindrome!");
+    // alt 1
+    int palindromeCount = 0;
+    for (int i = 0; i < inputCharArray.Length / 2; i++)
+    {
+        if (inputCharArray[i] == inputCharArray[^(i + 1)]) palindromeCount++;
+    }
+    if (palindromeCount == (inputCharArray.Length / 2)) WriteLine("The string is a palindrome!");
+    else WriteLine("The string is *not* a palindrome!");
 
     //alt 2
     //this requires a proxy string
     //use split instead and assign to a string[] and compare them when reversed?
 
-    string secondPart = inputString.Substring(0, inputString.Length / 2); //creates a new reference object out of the string - gives error
-    string firstPart = inputString.Substring(inputString.Length / 2);
+    // [0..^0]
+    // char[] firstPart = inputCharArray[..];
+    // char[] secondPart = inputCharArray[inputCharArray.Length / 2];
+    // WriteLine(secondPart);
+    // secondPart = (string)secondPart.Reverse();
+    // WriteLine(firstPart);
+    // WriteLine(secondPart);
 
     // string[] splitString = inputString.Split(inputString.Length / 2);
 
-    if (firstPart == (string)secondPart.Reverse()) WriteLine("The string is a palindrome!");
-    else WriteLine("The string is *not* a palindrome!");
+    // if (inputString.Substring(inputString.Length / 2) == inputString.Substring(0, inputString.Length / 2).Reverse())
+    //GetEnumerable() or just use Convert.ToCharArray().
+
+    // if (firstPart == secondPart) WriteLine("The string is a palindrome!");
+    // else WriteLine("The string is *not* a palindrome!");
 
     ReadKey();
 }
 
 static void RunExerciseTwentyEight()
+
 {
+    WriteLine("Enter 12 positive integer numbers: ");
+
+    uint[] inputIntegers = new uint[12];
+    for (uint u = 0; u < inputIntegers.Length; u++)
+    {
+        inputIntegers[u] = ToUInt32(ReadLine());
+    }
+    Write("You entered: ");
+    WriteLine(string.Join(" ", inputIntegers));
+
+    var evenNumbers = inputIntegers.Where(x => x % 2 == 0).ToArray();
+    var oddNumbers = inputIntegers.Where(x => x % 2 == 1).ToArray();
+
+    Write("Even numbers: ");
+    WriteLine(string.Join(" ", evenNumbers));
+    Write("Odd numbers: ");
+    WriteLine(string.Join(" ", oddNumbers));
+
     ReadKey();
 }
 
 static void RunExerciseTwentyNine()
 {
+    int[] randomArray = new int[20];
+    int[] evenFirstOddSecond = new int[20];
+    Random randomNumber = new();
+
+    for (int i = 0; i < randomArray.Length; i++)
+        randomArray[i] = randomNumber.Next(100); //for the sake of output readability, the maxValue is set to 100
+
+    Write("Created array: ");
+    WriteLine(string.Join(" ", randomArray));
+
+    //alt 1 - using the FindAll method of the static Array class and then concatenating the results
+    int[] evenNumbers = Array.FindAll(randomArray, x => x % 2 == 0); //returns all even numbers
+    int[] oddNumbers = Array.FindAll(randomArray, x => x % 2 == 1); //returns all odd numbers
+
+    evenFirstOddSecond = evenNumbers.Concat(oddNumbers).ToArray(); //Conversion could be expensive....
+    //or
+    // evenNumbers.CopyTo(evenFirstOddSecond, 0);
+    // oddNumbers.CopyTo(evenFirstOddSecond, evenNumbers.Length);
+
+    //alt 2
+    // int elementCounter = 0;
+    // foreach (int i in randomArray.Where(x => x % 2 == 0))
+    // {
+    //     evenFirstOddSecond[elementCounter++] = i;
+    // }
+    // foreach (int i in randomArray.Where(x => x % 2 == 1))
+    // {
+    //     evenFirstOddSecond[elementCounter++] = i;
+    // }
+
+    Write("Even first, odd second: ");
+    WriteLine(string.Join(" ", evenFirstOddSecond));
     ReadKey();
 }
 
 static void RunExerciseThirty()
 {
+    // Create an array. Set the size of an array as a random number between 5 and 15. Sort this array without using sort method.
+    Random randomNumber = new();
+
+    int[] arrayFiveFifteen = new int[randomNumber.Next(5, 15)];
+    for (int i = 0; i < arrayFiveFifteen.Length; i++)
+        arrayFiveFifteen[i] = randomNumber.Next(100); //for the sake of output readability, the maxValue is set to 100
+
+    int swapHolder;
+
+    Write("Generated array: ");
+    WriteLine(string.Join(" ", arrayFiveFifteen));
+
+    //Bubble-sort. Time complexity: O(n^2)). Space complexity: O(1).  - I know bubble-sort is bad, but it's the only one I know.
+    for (int j = 0; j < Math.Pow(arrayFiveFifteen.Length, 2); j++)
+    {
+        for (int i = 0; i < arrayFiveFifteen.Length - 1; i++)
+        {
+            if (arrayFiveFifteen[i] > arrayFiveFifteen[i + 1])
+            {
+                swapHolder = arrayFiveFifteen[i];
+                arrayFiveFifteen[i] = arrayFiveFifteen[i + 1];
+                arrayFiveFifteen[i + 1] = swapHolder;
+            }
+        }
+    }
+    //Quicker sorting method algorithm - add later?
+
+    Write("Sorted array:    ");
+    WriteLine(string.Join(" ", arrayFiveFifteen));
+
     ReadKey();
 }
 
 static void RunExerciseThirtyOne()
 {
+    // Create an array.Set the size of an array as a random number smaller than 16. Fill in the array with random numbers(positive, smaller than 100, not repeated).
+    // Create another array of the same size and ask the user if he / she wants to fill in the array with either square or cube result of the values from previous array.
+
+    Random randomNumber = new();
+    int[] randomArray = new int[randomNumber.Next(16)]; //use distinct
+
+    int numberToAdd;
+    for (int i = 0; i < randomArray.Length; i++)
+    {
+        numberToAdd = randomNumber.Next(100);
+        if (numberToAdd != Array.Find(randomArray, x => x == numberToAdd)) //only adds it if it doesn't already exist in the array
+            randomArray[i] = numberToAdd;
+        else i--; //if it does exist, we need to iterate on the same index again and generate a new random number for it.
+    }
+
+    Write("Generated array: ");
+    Write(string.Join(" ", randomArray));
+
+    Write("\nDo you want to square or cube these values? Type 2 to square or 3 to cube: ");
+    int power = ToInt32(ReadLine());
+    int[] derivedArray = new int[randomArray.Length];
+
+    for (int i = 0; i < randomArray.Length; i++)
+        derivedArray[i] = (int)Math.Pow(randomArray[i], power);
+
+    Write("New array generated: ");
+    Write(string.Join(" ", derivedArray));
+
     ReadKey();
 }
 
 static void RunExerciseThirtyTwo()
 {
+    //Let the user input a string with numbers comma separated like “1,2,34,83,19,45”. 
+    //Convert the number string to an array and find the min, the max and the average value. (Use strings split function if required)
+    Write("Insert a string with comma-separated number: ");
+
+    // char[] inputCharArray = ReadLine().ToCharArray();
+
+    string inputString = ReadLine();  //fix this input. Parse directly in readLine?????
+    int commaCount = inputString.Where(x => x == ',').Count(); //counts the commas
+    double[] doubleArray = new double[commaCount + 1]; //# of numbers represented by the number of commas +1
+
+
+    int startIndex = 0;
+    for (int i = 0; i < doubleArray.Length; i++)
+    {
+        {
+            doubleArray[i] = int.Parse(inputString.Substring(startIndex, inputString.IndexOf(',') - startIndex));
+            startIndex = inputString.IndexOf(',');
+        }
+    }
+
+    // doubleArray[i] = char.GetNumericValue(inputCharArr[digitCount]);
+    WriteLine("Lowest value is: " + doubleArray.Min());
+    WriteLine("Highest value is: " + doubleArray.Max());
+    WriteLine("Average value is: " + doubleArray.Average());
+
+    // if (inputString.IndexOf(',') != -1) //checks if another comma exists - add this criteria if more efficient
+    // WriteLine("Average value is: " + inputDoubleArr.Sum() / inputDoubleArr.Length); //this also works.
+    //skip conversion to char[] and use IndexOf() - add substrings to a string[] and convert using Array.ConvertAll or parse?
+    //parse until a comma and then add that number into a string[] ?
+    // var queryable = inputString.AsQueryable(); //this conversion could be expensive
+    // queryable.Where();
+
     ReadKey();
 }
 
@@ -595,6 +760,44 @@ static void RunExerciseThirtyFour()
 
 static void RunExerciseThirtyFive()
 {
+    ReadKey();
+}
+
+static void RunExerciseThirtySix()
+{
+    for (int j = 1; j <= 10; j++)
+    {
+        for (int k = 1; k <= 10; k++)
+        {
+            Write("+---");
+            if (k == 10)
+                Write("+");
+        }
+        WriteLine();
+
+        for (int i = 1; i <= 10; i++)
+        {
+            Write("|");
+
+            if (j * i == 100)
+                Write(j * i);
+            else if (j * i >= 10)
+                Write(" " + j * i);
+            else if (j * i < 10)
+                Write("  " + j * i);
+
+            if (i == 10)
+                Write("|");
+        }
+        WriteLine();
+
+        if (j == 10)
+        {
+            for (int k = 0; k < 10; k++)
+                Write("+---");
+            Write("+");
+        }
+    }
     ReadKey();
 }
 
@@ -712,22 +915,25 @@ while (keepAlive)
                 RunExerciseTwentyNine();
                 break;
             case 30:
-                RunExerciseTwentyNine();
+                RunExerciseThirty();
                 break;
             case 31:
-                RunExerciseTwentyNine();
+                RunExerciseThirtyOne();
                 break;
             case 32:
-                RunExerciseTwentyNine();
+                RunExerciseThirtyTwo();
                 break;
             case 33:
-                RunExerciseTwentyNine();
+                RunExerciseThirtyThree();
                 break;
             case 34:
-                RunExerciseTwentyNine();
+                RunExerciseThirtyFour();
                 break;
             case 35:
-                RunExerciseTwentyNine();
+                RunExerciseThirtyFive();
+                break;
+            case 36:
+                RunExerciseThirtySix();
                 break;
 
             case -1:
@@ -817,5 +1023,3 @@ public static class ExerciseMethods
     // }
 
 }
-
-//antingen subarray eller sort med linq eller bara vanlig sort och sen plocka ut första

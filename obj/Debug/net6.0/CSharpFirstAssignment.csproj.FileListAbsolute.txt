@@ -42,3 +42,17 @@ E:\Joakim\Documents\VSCodeprogram\backup\C_Sharp_Core6_Basic_First_Assignment\CS
 E:\Joakim\Documents\VSCodeprogram\backup\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.pdb
 E:\Joakim\Documents\VSCodeprogram\backup\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.genruntimeconfig.cache
 E:\Joakim\Documents\VSCodeprogram\backup\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\ref\CSharpFirstAssignment.dll
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.exe
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.deps.json
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.runtimeconfig.json
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.dll
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.pdb
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.GeneratedMSBuildEditorConfig.editorconfig
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.AssemblyInfoInputs.cache
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.AssemblyInfo.cs
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.csproj.CoreCompileInputs.cache
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.dll
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\refint\CSharpFirstAssignment.dll
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.pdb
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.genruntimeconfig.cache
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\ref\CSharpFirstAssignment.dll
