@@ -2,9 +2,6 @@
 using static System.Console;
 using static System.Convert;
 using System.Diagnostics;
-using System.ComponentModel.Design;
-using System.Security.Cryptography.X509Certificates;
-using System.Globalization;
 
 static void RunExerciseOne()
 {
