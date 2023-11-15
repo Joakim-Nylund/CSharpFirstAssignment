@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Joakims inloggning\\.nuget\\packages\\": {}
+    "C:\\Users\\Student\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
+      "projectUniqueName": "C:\\Users\\Student\\Source\\Repos\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
       "projectName": "CSharpFirstAssignment",
-      "projectPath": "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
-      "packagesPath": "C:\\Users\\Joakims inloggning\\.nuget\\packages\\",
-      "outputPath": "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\obj\\",
+      "projectPath": "C:\\Users\\Student\\Source\\Repos\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
+      "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Student\\Source\\Repos\\CSharpFirstAssignment\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Joakims inloggning\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Student\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

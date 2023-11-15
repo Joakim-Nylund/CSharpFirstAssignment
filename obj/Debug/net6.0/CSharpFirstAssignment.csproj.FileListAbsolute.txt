@@ -56,3 +56,17 @@ E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFir
 E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.pdb
 E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.genruntimeconfig.cache
 E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\ref\CSharpFirstAssignment.dll
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.AssemblyInfoInputs.cache
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.AssemblyInfo.cs
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.csproj.CoreCompileInputs.cache
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.dll
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\refint\CSharpFirstAssignment.dll
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.pdb
+C:\Users\Student\source\repos\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.exe
+C:\Users\Student\source\repos\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.deps.json
+C:\Users\Student\source\repos\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.runtimeconfig.json
+C:\Users\Student\source\repos\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.dll
+C:\Users\Student\source\repos\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.pdb
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.genruntimeconfig.cache
+C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\ref\CSharpFirstAssignment.dll

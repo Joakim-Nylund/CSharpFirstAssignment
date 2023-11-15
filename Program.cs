@@ -2,6 +2,7 @@
 using static System.Console;
 using static System.Convert;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 static void RunExerciseOne()
 {
@@ -64,14 +65,13 @@ static void RunExerciseFour()
 
     string[] todayTimeAndDatevariants = now.GetDateTimeFormats(sweCulture); //if no argument is given, it uses a default set of formats (which seems to be based on OS settings)
     WriteLine("\nAll alternative (Swedish) date and time formats for today/now: ");
-    foreach (string format in todayTimeAndDatevariants.Distinct()) //.Distinct() added because of duplicates (last time I checked)
-    {
-        WriteLine(format);
-    }
+    foreach (string format in todayTimeAndDatevariants.Distinct()) WriteLine(format); //.Distinct() added because of duplicates
 
     //alt 1
-    WriteLine($"\nTomorrow's date in short format is: {now.AddDays(1).ToString("d")}");
-    WriteLine($"Yesterday's date in short format is: {now.AddDays(-1).ToString("d")}");
+    WriteLine($"\nTomorrow's date in short format is: {now.AddDays(1):d}");
+    WriteLine($"Yesterday's date in short format is: {now.AddDays(-1):d}");
+    // WriteLine($"\nTomorrow's date in short format is: {now.AddDays(1).ToString("d")}");
+    // WriteLine($"Yesterday's date in short format is: {now.AddDays(-1).ToString("d")}");
 
     //alt2 
     // DateTime tomorrow = now.AddDays(1);
@@ -142,7 +142,16 @@ static void RunExerciseEight()
     IList<int> oddList = new List<int>(randomIntegerList.Except(evenList));
     // IList<int> oddList = new List<int>(randomIntegerList.Where(x => x % 2 != 0));
 
-    // An alternative would be: 
+    //An alternative would be:
+    // for (int i = 0; i<randomIntegerList.Count; i++)
+    // {
+    //     if (randomIntegerList[i] % 2 == 0) 
+    //         evenList.Add(randomIntegerList[i]);
+    //     if (randomIntegerList[i] % 2 == 1) 
+    //         oddList.Add(randomIntegerList[i]);
+    // }
+
+    // A lazier (and more computationally expensive) alternative would be: 
     // foreach (int i in randomIntegerList)
     //     if (i % 2 == 0) evenList.Add(i);
     // foreach (int i in randomIntegerList)
@@ -163,8 +172,8 @@ static void RunExerciseNine()
     double circleArea = Math.PI * radius * radius; //formula pi*radius^2
     WriteLine("The area of a circle with the given radius is: {0} units", circleArea);
 
-    double sphereVolume = (4 / 3) * Math.PI * radius * radius * radius; //formula (4/3)pi*radius^3 - I know the brackets are unnecessary
-    WriteLine("The volume of a sphere with the given radius is: {0} units", sphereVolume);
+    double sphereVolume = 4 * Math.PI * radius * radius; //formula (4*pi*radius^
+    WriteLine("The surface area of a sphere with the given radius is: {0} units", sphereVolume);
 
     ReadKey();
 }
@@ -531,11 +540,11 @@ static void RunExerciseTwentySix()
     double b = ToDouble(ReadLine());
     WriteLine("Swapping....");
 
-    // double A = a, B = b;
-    // ExerciseMethods.SwapExercise26(a, b, out A, out B); //using out
-
     ExerciseMethods.SwapExercise26(ref a, ref b);
     WriteLine($"Value A is now also {a} outside the function and value B is now also {b} outside the fuction.");
+
+    // double A = a, B = b;
+    // ExerciseMethods.SwapExercise26(a, b, out A, out B); //using out
 
     ReadKey();
 }
@@ -710,54 +719,106 @@ static void RunExerciseThirtyOne()
 
 static void RunExerciseThirtyTwo()
 {
-    //Let the user input a string with numbers comma separated like “1,2,34,83,19,45”. 
-    //Convert the number string to an array and find the min, the max and the average value. (Use strings split function if required)
     Write("Insert a string with comma-separated number: ");
+    string[] numberSnippet = ReadLine().Split(',');
+    int[] numbers = new int[numberSnippet.Length];
+    for (int i = 0; i < numberSnippet.Length; i++)
+        numbers[i] = int.Parse(numberSnippet[i]);
 
-    // char[] inputCharArray = ReadLine().ToCharArray();
-
-    string inputString = ReadLine();  //fix this input. Parse directly in readLine?????
-    int commaCount = inputString.Where(x => x == ',').Count(); //counts the commas
-    double[] doubleArray = new double[commaCount + 1]; //# of numbers represented by the number of commas +1
-
-
-    int startIndex = 0;
-    for (int i = 0; i < doubleArray.Length; i++)
-    {
-        {
-            doubleArray[i] = int.Parse(inputString.Substring(startIndex, inputString.IndexOf(',') - startIndex));
-            startIndex = inputString.IndexOf(',');
-        }
-    }
-
-    // doubleArray[i] = char.GetNumericValue(inputCharArr[digitCount]);
-    WriteLine("Lowest value is: " + doubleArray.Min());
-    WriteLine("Highest value is: " + doubleArray.Max());
-    WriteLine("Average value is: " + doubleArray.Average());
-
-    // if (inputString.IndexOf(',') != -1) //checks if another comma exists - add this criteria if more efficient
-    // WriteLine("Average value is: " + inputDoubleArr.Sum() / inputDoubleArr.Length); //this also works.
-    //skip conversion to char[] and use IndexOf() - add substrings to a string[] and convert using Array.ConvertAll or parse?
-    //parse until a comma and then add that number into a string[] ?
-    // var queryable = inputString.AsQueryable(); //this conversion could be expensive
-    // queryable.Where();
-
+    WriteLine("Lowest value is: " + numbers.Min());
+    WriteLine("Highest value is: " + numbers.Max());
+    WriteLine("Average value is: " + numbers.Average());
     ReadKey();
 }
 
 static void RunExerciseThirtyThree()
 {
+    //A) Change string “The quick fox Jumped Over the DOG” to the string “The brown fox jumped over the lazy dog” using required string manipulation functions.
+    string questionA = "The quick fox Jumped Over the DOG";
+
+    //Quick and efficient solution.
+    WriteLine("Question A: Original text: " + questionA);
+    questionA = questionA.Replace("quick fox Jumped Over the DOG", "brown fox jumped over the lazy dog");
+    WriteLine("Question A: Altered text: " + questionA);
+
+    // Longer solution showing other ways to accomplish the same task.
+    // WriteLine("Question A: Original text: " + questionA);
+    // questionA = questionA.Replace("quick", "brown").Replace("J", "j").Replace("Over", "over").Substring(0, questionA.IndexOf('D')) + "lazy " + questionA.Substring(questionA.IndexOf("D"), questionA.IndexOf("G") - questionA.IndexOf("D") + 1).ToLower();
+    // WriteLine("Question A: Altered text: " + questionA);
+
+    //B) - Enter any two words from console and check whether they are same words or not
+    Write("\nEnter the first word: ");
+    string? questionB1 = ReadLine();
+    Write("Enter the second word: ");
+    string? questionB2 = ReadLine();
+
+    if (questionB1.Equals(questionB2, StringComparison.InvariantCultureIgnoreCase))
+        WriteLine("They are the same word!");
+    else
+        WriteLine("They are *not* the same word");
+
+
+    //C) - Input word Donkey and display it as the word Monkey on the console.
+    string questionC = "Donkey";
+    WriteLine("\nQuestion C: Original text: " + questionC);
+    questionC = questionC.Replace("D", "M");
+    WriteLine("Question C: Altered text: " + questionC);
+
+    // D) Replace ‘I’ with ‘We’ and ‘am’ with ‘are’ in given text below.
+    string questionD = "I am going to visit Kolmården zoo tomorrow. I am a big fan of the dolphin show. I may watch all dolphin shows during the day. I would like to take a gondola safari as well. I wish to visit Bamse and his team there.";
+
+    WriteLine("\nQuestion D: Original text: " + questionD);
+    questionD = questionD.Replace("a big fan", "big fans").Replace("I", "We").Replace("am", "are");
+    WriteLine("Question D: Altered text: " + questionD);
+
+    //E) Actual string is "She is the popular singer." and the expected string is "She is the most popular singer."
+    string questionE = "She is the popular singer.";
+    WriteLine("\nQuestion E: Original text: " + questionE);
+    questionE = questionE.Replace("the", "the most");
+    WriteLine("Question E: Altered text: " + questionE);
+
+    //F) Actual string is "A friend is the asset of your life." and the expected string is "A true friend is the greatest asset of your life"
+    string questionF = "A friend is the asset of your life.";
+    WriteLine("\nQuestion F: Original text: " + questionF);
+    questionF = questionF.Remove(questionF.IndexOf('.'), 1).Replace("A", "A true").Replace("the", "the greatest");
+    WriteLine("Question F: Altered text: " + questionF);
+
+    //G) Actual string is "My name is Nalini Phopase." Expected string: "Nalini Phopase"
+    string questionG = "My name is Nalini Phopase.";
+    WriteLine("\nQuestion G: Original text: " + questionG);
+    // questionG = questionG.Remove(questionG.IndexOf('.'), 1).Substring(questionG.IndexOf('N'));
+    questionG = questionG.Remove(questionG.IndexOf('.'), 1)[questionG.IndexOf('N')..];
+    WriteLine("Question G: Altered text: " + questionG);
+
+    //H) Actual string is "Arrays are very common in programming, they look something like: [1,2,3,4,5]" Expected string: "[1,4,5,6,7,8]"*/
+    string questionH = "Arrays are very common in programming, they look something like: [1,2,3,4,5]";
+    WriteLine("\nQuestion H: Original text: " + questionH);
+    questionH = questionH.Substring(questionH.IndexOf('['));
+    WriteLine("Question H: Altered text: " + questionH);
+
     ReadKey();
 }
 
 static void RunExerciseThirtyFour()
 {
+    Write("Enter your date of birth (format: yyyy-mm-dd): ");
+    string? dateOfBirthString = ReadLine();
+    int age = ExerciseMethods.CalculateAge(dateOfBirthString);
+    WriteLine($"You are {age} years old");
+
+    //add .Weekday and say "you were born on a {dateOfBirth.Weekday} and are x years old". ?
+
     ReadKey();
 }
 
 static void RunExerciseThirtyFive()
 {
+    Write("Enter your name:");
+    string name = ReadLine();
+    Write("\n Greetings ");
     ReadKey();
+
+    // ExerciseMethods.CalculateAge(dateOfBirthString);
 }
 
 static void RunExerciseThirtySix()
@@ -999,14 +1060,12 @@ public static class ExerciseMethods
         WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
     }
 
-    public static (double, double) SwapExercise26(ref double a, ref double b)
+    public static void SwapExercise26(ref double a, ref double b)
     {
         double temp = b;
         b = a;
         a = temp;
         WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
-        (double, double) tuple = (a, b);
-        return tuple;
     }
 
     // public static void SwapExercise26(double a, double b, out double A, out double B) //using out instead
@@ -1018,5 +1077,22 @@ public static class ExerciseMethods
     //     B = b;
     //     WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
     // }
+
+    public static int CalculateAge(string dateOfBirthString)
+    {
+        //add ability to enter in any format
+        // string[] dateTimeVariantsToday = now.GetDateTimeFormats();
+
+        DateTime dateOfBirth = ToDateTime(dateOfBirthString);
+        DateTime now = DateTime.Now;
+
+        int age;
+        if (dateOfBirth.Month < now.Month || (dateOfBirth.Month == now.Month && dateOfBirth.Day <= now.Day)) //either a previous month, or a previous day/the same day the same month
+            age = now.Year - dateOfBirth.Year;
+        else
+            age = now.Year - dateOfBirth.Year - 1;
+
+        return age;
+    }
 
 }
