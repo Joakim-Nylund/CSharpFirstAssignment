@@ -1093,8 +1093,8 @@ public class ExerciseMethods
 
 public class Tab
 {
-    static string[] allBeverages = { "Beer", "Coke" };
-    static string[] adultBeverages = { "Beer" }; //turn these into lists? make dictionaries? key = name of the drink, value = isOfDrinkingAge bool  ++++++++++++++++
+    static string[] allBeverages = { "beer", "coke" };
+    static string[] adultBeverages = { "beer" }; //turn these into lists? make dictionaries? key = name of the drink, value = isOfDrinkingAge bool  ++++++++++++++++
     static string[] childBeverages = allBeverages.Except(adultBeverages).ToArray();
     private string customerAnswer { get; set; }
 
@@ -1109,7 +1109,7 @@ public class Tab
     {
         for (int i = 0; i < beverages.Length; i++)
         {
-            Write("Do you want to order a" + beverages[i] + ": ");
+            Write("Do you want to order a " + beverages[i] + ": ");
             this.customerAnswer = ReadLine();
 
             if (customerAnswer.Equals("Yes", InvariantCultureIgnoreCase))
