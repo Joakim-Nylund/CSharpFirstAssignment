@@ -5,6 +5,7 @@ using System.Diagnostics;
 using static System.StringComparison;
 using System.Security.Cryptography;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 
 static void RunExerciseOne()
 {
@@ -54,7 +55,7 @@ static void RunExerciseFour()
     DateTime now = DateTime.Now;
 
     //alt 1
-    WriteLine("Todays date in the short date format is: " + now.ToString("d")); //the format character d and D handle the formatting in a concise manner.
+    WriteLine("Todays date in the short date format is: " + now.ToString("d")); //the format characters d and D handle the formatting in a concise manner.
     WriteLine("Today's date in the long date format is: " + now.ToString("D"));
 
     //alt 2
@@ -570,8 +571,7 @@ static void RunExerciseTwentySeven()
     else WriteLine("The string is *not* a palindrome!");
 
     //alt 2
-    //this requires a proxy string
-    //use split instead and assign to a string[] and compare them when reversed?
+    //use split instead and assign to a string[] and compare them after the reversal?
 
     // [0..^0]
     // char[] firstPart = inputCharArray[..];
@@ -633,6 +633,7 @@ static void RunExerciseTwentyNine()
     int[] oddNumbers = Array.FindAll(randomArray, x => x % 2 == 1); //returns all odd numbers
 
     evenFirstOddSecond = evenNumbers.Concat(oddNumbers).ToArray(); //Conversion could be expensive....
+
     //or
     // evenNumbers.CopyTo(evenFirstOddSecond, 0);
     // oddNumbers.CopyTo(evenFirstOddSecond, evenNumbers.Length);
@@ -724,10 +725,10 @@ static void RunExerciseThirtyOne()
 static void RunExerciseThirtyTwo()
 {
     Write("Insert a string with comma-separated number: ");
-    string[] numberSnippet = ReadLine().Split(',');
-    int[] numbers = new int[numberSnippet.Length];
-    for (int i = 0; i < numberSnippet.Length; i++)
-        numbers[i] = int.Parse(numberSnippet[i]);
+    string[] numberSnippets = ReadLine().Split(',');
+    int[] numbers = new int[numberSnippets.Length];
+    for (int i = 0; i < numberSnippets.Length; i++)
+        numbers[i] = int.Parse(numberSnippets[i]);
 
     WriteLine("Lowest value is: " + numbers.Min());
     WriteLine("Highest value is: " + numbers.Max());
@@ -813,72 +814,18 @@ static void RunExerciseThirtyFour()
     //add .Weekday and say "you were born on a {dateOfBirth.Weekday} and are x years old". ?
     ReadKey();
 }
+
 static void RunExerciseThirtyFive()
 {
     Write("Enter your full name: ");
-    string[] name = ReadLine().Split(" "); //format Firstname Lastname - add local-culture compatibility??
-    Write($"\n Greetings {name[0]} {name[1]}, when were you born? ");
-    string? dateofBirthString35 = ReadLine();
-    int age = ExerciseMethods.CalculateAge(dateofBirthString35);
+    string[] firstAndLastName = ReadLine().Split(" "); //format Firstname Lastname - add local-culture compatibility??
+    Write($"Greetings {firstAndLastName[0]} {firstAndLastName[1]}, when were you born? ");
+    string? birthDate = ReadLine();
 
-<<<<<<< HEAD
-    long lo = 1L;
-    //add constructor to the struct (intialize with new and the birthdate)
-    //generate property age by CalculateAge
+    Customer newCustomer = new Customer(birthDate, firstAndLastName[0] + " " + firstAndLastName[1]);
+    Tab newCustomerTab = new Tab(newCustomer);
 
-    if (age >= 18)
-    {
-        string? cokeAnswerAdult = default;
-        do
-        {
-            string? beerAnswer = default;
-
-            Write("Do you want to order a beer? (Yes/No) : ");
-            beerAnswer = ReadLine();
-
-            if (beerAnswer.Equals("Yes", InvariantCultureIgnoreCase))
-            {
-                WriteLine("One beer served!");
-            }
-            else if (beerAnswer.Equals("No", InvariantCultureIgnoreCase))
-            {
-                Write("Do you want to order a coke? (Yes/No)");
-                cokeAnswerAdult = ReadLine();
-
-                if (cokeAnswerAdult.Equals("Yes", InvariantCultureIgnoreCase))
-                {
-                    WriteLine("One coke served!");
-                }
-            }
-            else
-                WriteLine("Sorry, I couldn't understand you. Try answering (Yes/No) again : ");
-
-        } while (!cokeAnswerAdult.Equals("Yes", InvariantCultureIgnoreCase));
-    }
-    else
-    {
-        string? cokeAnswerChild = default;
-        do
-        {
-            Write("Do you want to order a coke? (Yes/No) : ");
-            cokeAnswerChild = ReadLine();
-            if (cokeAnswerChild.Equals("Yes", InvariantCultureIgnoreCase))
-            {
-                WriteLine("One coke served!");
-            }
-            else if (cokeAnswerChild.Equals("No", InvariantCultureIgnoreCase))
-            {
-                break;
-            }
-            else
-                WriteLine("Sorry, I couldn't understand you. Try answering (Yes/No) again : ");
-
-        } while (!cokeAnswerChild.Equals("Yes", InvariantCultureIgnoreCase));
-    }
     ReadKey();
-
-    // ExerciseMethods.CalculateAge(dateOfBirthString);
-
 }
 
 static void RunExerciseThirtySix()
@@ -1081,7 +1028,6 @@ public class ExerciseMethods
     {
         return one + two + three + four;
     }
-
     public static int GreatestNumber(int[] array)
     {
         //Alternative 1
@@ -1100,7 +1046,6 @@ public class ExerciseMethods
         // return highestNumber;
 
     }
-
     public static void SwapExercise25(double a, double b)
     {
         double temp = b;
@@ -1109,7 +1054,6 @@ public class ExerciseMethods
 
         WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
     }
-
     public static void SwapExercise26(ref double a, ref double b)
     {
         double temp = b;
@@ -1147,28 +1091,46 @@ public class ExerciseMethods
 
 }
 
-public class Bar : ExerciseMethods
+public class Tab
 {
-    //fix ternary operator for this ?
-    //private
-    string beerOrderQuestion = "Do you want to order a beer? (Yes/No) : ";
-    string cokeOrderQuestion = "Do you want to order a coke? (Yes/No) : ";
-    string servingBeer = "Beer served!";
-    string servingCoke = "Coke served!";
+    static string[] allBeverages = { "Beer", "Coke" };
+    static string[] adultBeverages = { "Beer" }; //turn these into lists? make dictionaries? key = name of the drink, value = isOfDrinkingAge bool  ++++++++++++++++
+    static string[] childBeverages = allBeverages.Except(adultBeverages).ToArray();
+    private string customerAnswer { get; set; }
+
+    public Tab(Customer customer)
+    {
+        if (customer.isOfDrinkingAge == true)
+            GetOrder(allBeverages);
+        else
+            GetOrder(childBeverages);
+    }
+    public void GetOrder(string[] beverages)
+    {
+        for (int i = 0; i < beverages.Length; i++)
+        {
+            Write("Do you want to order a" + beverages[i] + ": ");
+            this.customerAnswer = ReadLine();
+
+            if (customerAnswer.Equals("Yes", InvariantCultureIgnoreCase))
+            {
+                WriteLine("Serving " + beverages[i] + "!");
+                break;
+            }
+        }
+    }
 }
 
 public class Customer : ExerciseMethods
 {
-    string test = "test";
-    int age
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public bool isOfDrinkingAge;
+    public Customer(string birthDateString, string name = "anonymous customer")
     {
-        get { return age; }
-        set { age = CalculateAge(test); }
+        Name = name;
+        Age = CalculateAge(birthDateString);
+        if (Age >= 18)
+            isOfDrinkingAge = true;
     }
-    string birthDate { get; set; }
-    bool wantsToOrderCoke { get; set; }
-
-    //order beer method
-    //order coke method
-    //or place them in ExerciseMethods
 }
