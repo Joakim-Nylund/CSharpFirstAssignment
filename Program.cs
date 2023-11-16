@@ -2,7 +2,9 @@
 using static System.Console;
 using static System.Convert;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using static System.StringComparison;
+using System.Security.Cryptography;
+using System.Reflection.Metadata.Ecma335;
 
 static void RunExerciseOne()
 {
@@ -384,6 +386,8 @@ static void RunExerciseSeventeen()
         startYear++;
     }
     WriteLine();
+
+    //or just use the .IsLeapYear method from DateTime -----------------------------------------
 
     ReadKey();
 }
@@ -802,23 +806,75 @@ static void RunExerciseThirtyThree()
 static void RunExerciseThirtyFour()
 {
     Write("Enter your date of birth (format: yyyy-mm-dd): ");
-    string? dateOfBirthString = ReadLine();
-    int age = ExerciseMethods.CalculateAge(dateOfBirthString);
+    string? dateOfBirthString34 = ReadLine();
+    int? age = ExerciseMethods.CalculateAge(dateOfBirthString34);
     WriteLine($"You are {age} years old");
 
     //add .Weekday and say "you were born on a {dateOfBirth.Weekday} and are x years old". ?
-
     ReadKey();
 }
-
 static void RunExerciseThirtyFive()
 {
-    Write("Enter your name:");
-    string name = ReadLine();
-    Write("\n Greetings ");
-    ReadKey();
+    Write("Enter your full name: ");
+    string[] name = ReadLine().Split(" "); //format Firstname Lastname - add local-culture compatibility??
+    Write($"\n Greetings {name[0]} {name[1]}, when were you born? ");
+    string? dateofBirthString35 = ReadLine();
+    int age = ExerciseMethods.CalculateAge(dateofBirthString35);
 
-    // ExerciseMethods.CalculateAge(dateOfBirthString);
+    long lo = 1L;
+    //add constructor to the struct (intialize with new and the birthdate)
+    //generate property age by CalculateAge
+
+    if (age >= 18)
+    {
+        string? cokeAnswerAdult = default;
+        do
+        {
+            string? beerAnswer = default;
+
+            Write("Do you want to order a beer? (Yes/No) : ");
+            beerAnswer = ReadLine();
+
+            if (beerAnswer.Equals("Yes", InvariantCultureIgnoreCase))
+            {
+                WriteLine("One beer served!");
+            }
+            else if (beerAnswer.Equals("No", InvariantCultureIgnoreCase))
+            {
+                Write("Do you want to order a coke? (Yes/No)");
+                cokeAnswerAdult = ReadLine();
+
+                if (cokeAnswerAdult.Equals("Yes", InvariantCultureIgnoreCase))
+                {
+                    WriteLine("One coke served!");
+                }
+            }
+            else
+                WriteLine("Sorry, I couldn't understand you. Try answering (Yes/No) again : ");
+
+        } while (!cokeAnswerAdult.Equals("Yes", InvariantCultureIgnoreCase));
+    }
+    else
+    {
+        string? cokeAnswerChild = default;
+        do
+        {
+            Write("Do you want to order a coke? (Yes/No) : ");
+            cokeAnswerChild = ReadLine();
+            if (cokeAnswerChild.Equals("Yes", InvariantCultureIgnoreCase))
+            {
+                WriteLine("One coke served!");
+            }
+            else if (cokeAnswerChild.Equals("No", InvariantCultureIgnoreCase))
+            {
+                break;
+            }
+            else
+                WriteLine("Sorry, I couldn't understand you. Try answering (Yes/No) again : ");
+
+        } while (!cokeAnswerChild.Equals("Yes", InvariantCultureIgnoreCase));
+    }
+    ReadKey();
 }
 
 static void RunExerciseThirtySix()
@@ -1017,7 +1073,7 @@ while (keepAlive)
     }
 }
 
-public static class ExerciseMethods
+public class ExerciseMethods
 {
     public static double AddNumbers(double one, double two)
     {
@@ -1095,4 +1151,30 @@ public static class ExerciseMethods
         return age;
     }
 
+}
+
+public class Bar : ExerciseMethods
+{
+    //fix ternary operator for this ?
+    //private
+    string beerOrderQuestion = "Do you want to order a beer? (Yes/No) : ";
+    string cokeOrderQuestion = "Do you want to order a coke? (Yes/No) : ";
+    string servingBeer = "Beer served!";
+    string servingCoke = "Coke served!";
+}
+
+public class Customer : ExerciseMethods
+{
+    string test = "test";
+    int age
+    {
+        get { return age; }
+        set { age = CalculateAge(test); }
+    }
+    string birthDate { get; set; }
+    bool wantsToOrderCoke { get; set; }
+
+    //order beer method
+    //order coke method
+    //or place them in ExerciseMethods
 }
