@@ -821,6 +821,7 @@ static void RunExerciseThirtyFive()
     string? dateofBirthString35 = ReadLine();
     int age = ExerciseMethods.CalculateAge(dateofBirthString35);
 
+<<<<<<< HEAD
     long lo = 1L;
     //add constructor to the struct (intialize with new and the birthdate)
     //generate property age by CalculateAge
@@ -875,6 +876,9 @@ static void RunExerciseThirtyFive()
         } while (!cokeAnswerChild.Equals("Yes", InvariantCultureIgnoreCase));
     }
     ReadKey();
+
+    // ExerciseMethods.CalculateAge(dateOfBirthString);
+
 }
 
 static void RunExerciseThirtySix()
@@ -990,16 +994,6 @@ while (keepAlive)
                 Write("How many digits of the fibonacci sequence do you want to compute?: ");
                 int fibonacciDigits = ToInt32(ReadLine());
                 WriteLine(RunExerciseTwentyOne(fibonacciDigits));
-                // RunExerciseTwentyOne(fibonacciDigits);
-
-                // int[] fibonacciArray = new int[fibonacciDigits];
-                // fibonacciArray[0] = 0;
-                // fibonacciArray[1] = 1;
-
-                //store in an array and output it with string.Join(" ", fibArray); instead? 
-                //use parse instead of Convert.To... ? 
-
-                //create a separate method for calculating the sequence and move this to the RunExerciseTwentyOne ?
 
                 ReadKey();
                 break;
