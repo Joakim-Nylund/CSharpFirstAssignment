@@ -75,8 +75,6 @@ static void RunExerciseFive()
     int evenNumPartC = 2;
     int oddNumPartC = 3;
     WriteLine("Part C. Answer: " + oddNumPartC / (double)evenNumPartC);
-
-
 }
 
 static void RunExerciseSix()
@@ -89,7 +87,6 @@ static void RunExerciseSix()
     int g = x + y * z / m; //no parentheses needed for this one
     int h = (x + y * z) / m;
     WriteLine($"e: {e0} f: {f} g: {g} h: {h}");
-
 }
 
 static void RunExerciseSeven()
@@ -179,7 +176,7 @@ static void RunExerciseEleven()
         WriteLine("You don't have a fever");
     else if (bodyTemp < 36.5 && bodyTemp > 20.0)
         WriteLine("You have hypothermia.");
-    else if (bodyTemp > 37.5 && bodyTemp < 46.5)
+    else if (bodyTemp > 37.5 && bodyTemp < 43)
         WriteLine("You have a fever.");
     else
         WriteLine("Something is wrong.");
