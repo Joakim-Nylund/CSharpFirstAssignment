@@ -70,3 +70,4 @@ C:\Users\Student\source\repos\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirst
 C:\Users\Student\source\repos\CSharpFirstAssignment\bin\Debug\net6.0\CSharpFirstAssignment.pdb
 C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.genruntimeconfig.cache
 C:\Users\Student\source\repos\CSharpFirstAssignment\obj\Debug\net6.0\ref\CSharpFirstAssignment.dll
+E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\obj\Debug\net6.0\CSharpFirstAssignment.sourcelink.json

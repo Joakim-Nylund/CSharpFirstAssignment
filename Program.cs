@@ -1,4 +1,7 @@
 ﻿using System.Buffers;
+using System.Globalization;
+using System.Text;
+using static ExerciseClass; //I added this.
 using static System.Console;
 using static System.Convert;
 using static System.StringComparison;
@@ -7,8 +10,10 @@ static void RunExerciseOne()
 {
     string firstName = "Joakim";
     string lastName = "Nylund";
-    // WriteLine("Hello {0} {1}! I'm glad to inform you that you are the test subject of my very first assignment!", firstName, lastName);
+
     WriteLine($"Hello {firstName} {lastName}! I'm glad to inform you that you are the test subject of my very first assignment!");
+    // WriteLine("Hello {0} {1}! I'm glad to inform you that you are the test subject of my very first assignment!", firstName, lastName);
+    // WriteLine("Hello " + firstName + " " + lastName + "! I'm glad to inform you that you are the test subject of my very first assignment!", firstName, lastName);
 }
 
 static void RunExerciseTwo()
@@ -17,46 +22,36 @@ static void RunExerciseTwo()
     string? firstName = ReadLine();
     Write("Please enter your last name: ");
     string? lastName = ReadLine();
-    WriteLine("Hello {0} {1}! Have a nice day!", firstName, lastName);
+
+    WriteLine($"\nHello {firstName} {lastName}! Have a nice day!");
 }
 
 static void RunExerciseThree()
 {
-    Write("Enter two consecutive numbers with a space in between: ");
+    Write("Enter two consecutive numbers with one(!) space in between: ");
     string[] inputtedNumbers = ReadLine()!.Trim().Split(" ");
-    int n0 = int.Parse(inputtedNumbers[0]);
-    int n1 = int.Parse(inputtedNumbers[1]);
-
-    if (n1 == n0 + 1)
-        Write("They are consecutive ");
-    else
-        Write("They are not consecutive ");
+    Write(int.Parse(inputtedNumbers[1]) == int.Parse(inputtedNumbers[0]) + 1 ? "They are consecutive " : "They are not consecutive ");
 }
 
 static void RunExerciseFour()
 {
-    DateTime now = DateTime.Now;
-    //alt 1
-    WriteLine("Todays date in the short date format is: " + now.ToString("d")); //the format characters d and D handle the formatting in a concise manner.
-    WriteLine("Today's date in the long date format is: " + now.ToString("D"));
+    //The format characters d (short format) and D (long format) make it more concise.
+    WriteLine($"Today's date is {DateTime.Today:d} in a short format, {DateTime.Today:D} in a long format, and {DateTime.Today:yyyy-MMMM-dd} in a mixed format.");
 
-    //alt 2
-    // WriteLine("Todays date in the short date format is: " + now.ToShortDateString());
-    // WriteLine("Today's date in the long date format is: " + now.ToLongDateString());
+    //example of a different approach
+    // WriteLine("Todays date in the short date format is: " + DateTime.Now.ToShortDateString());
+    // WriteLine("Today's date in the long date format is: " + DateTime.Now.ToLongDateString());
 
-    WriteLine("Today's date in a mixed format is: " + now.ToString("yyyy-MMMM-dd"));
+    WriteLine($"\nTomorrow's date in a short format: {DateTime.Today.AddDays(1):d}");
+    WriteLine($"Yesterday's date in a short format: {DateTime.Today.AddDays(-1):d}");
 
     IFormatProvider esCulture = new System.Globalization.CultureInfo("es-ESP", true); //for fun
-    string[] todayTimeAndDatevariants = now.GetDateTimeFormats(esCulture); // defaults to OS settings if no argument is passed.
+    string[] currentMomentDateTimeFormats = DateTime.Now.GetDateTimeFormats(esCulture); //defaults to OS settings if no argument is passed.
 
+    cyanForeGroundColor();
     WriteLine("\nAll alternative Spanish date & time formats: ");
-    foreach (string format in todayTimeAndDatevariants.Distinct()) //.Distinct() added because of duplicates
-        WriteLine(format);
-
-    WriteLine($"\nTomorrow's date in short format is: {now.AddDays(1):d}");
-    WriteLine($"Yesterday's date in short format is: {now.AddDays(-1):d}");
-    // WriteLine($"\nTomorrow's date in short format is: {now.AddDays(1).ToString("d")}");
-    // WriteLine($"Yesterday's date in short format is: {now.AddDays(-1).ToString("d")}");
+    WriteLine(string.Join("\n", currentMomentDateTimeFormats.Distinct())); //.Distinct() added because of duplicates
+    greenForeGroundColor();
 }
 
 static void RunExerciseFive()
@@ -74,17 +69,16 @@ static void RunExerciseFive()
     //Part c
     int evenNumPartC = 2;
     int oddNumPartC = 3;
-    WriteLine("Part C. Answer: " + oddNumPartC / (double)evenNumPartC);
+    WriteLine("\nPart C. Answer: " + oddNumPartC / (double)evenNumPartC);
 }
 
 static void RunExerciseSix()
 {
     int x = 40, y = 20, z = 25, m = 15;
-
-    int e0 = (x + y) * z / m;
-    int e1 = (int)((x + y) * z / (double)m); //if you want to calculate e using this operational order, you need to cast m to double
+    int e0 = (x + y) * z / m; //   //(2*2*3*5)*(5*5)/(3*5) = 1500/15  - There are no denominator-exclusive primes, meaning no casting is necessary for this order (even if arithmetic operators had been right-associative) 
+    int e1 = (int)((x + y) * (z / (double)m)); // (2*2*3*5)*((5*5)/(3*5)) = 60*1,666...  - you first need to cast m (or z) to double, and then the whole expression to int.
     int f = x + y * (z / m);
-    int g = x + y * z / m; //no parentheses needed for this one
+    int g = x + y * z / m; //no parentheses are needed for this one
     int h = (x + y * z) / m;
     WriteLine($"e: {e0} f: {f} g: {g} h: {h}");
 }
@@ -93,10 +87,7 @@ static void RunExerciseSeven()
 {
     Write("Enter any positive integer: ");
     int? integerToBeChecked = int.Parse(ReadLine()!);
-    if (integerToBeChecked % 2 == 0)
-        WriteLine("The integer is even");
-    else
-        WriteLine("The integer is odd");
+    WriteLine(integerToBeChecked % 2 == 0 ? "The integer is even" : "The integer is odd");
 }
 
 static void RunExerciseEight()
@@ -108,9 +99,9 @@ static void RunExerciseEight()
 
     IList<int> evenList = new List<int>(randomIntegerList.Where(x => x % 2 == 0));
     IList<int> oddList = new List<int>(randomIntegerList.Except(evenList));
-    // IList<int> oddList = new List<int>(randomIntegerList.Where(x => x % 2 != 0));
+    // IList<int> oddList = new List<int>(randomIntegerList.Where(x => x % 2 != 0));  //also works
 
-    //An alternative would be:
+    //Same thing can be accomplished using a for-loop (or a foreach loop).
     // for (int i = 0; i<randomIntegerList.Count; i++)
     // {
     //     if (randomIntegerList[i] % 2 == 0) 
@@ -119,16 +110,8 @@ static void RunExerciseEight()
     //         oddList.Add(randomIntegerList[i]);
     // }
 
-    //Another alternative would be
-    // foreach (int i in randomIntegerList)
-    //     if (i % 2 == 0) evenList.Add(i);
-    // foreach (int i in randomIntegerList)
-    //     if (i % 2 != 0) oddList.Add(i);
-
-    WriteLine("List of even elements: ");
-    WriteLine(string.Join(" ", evenList));
-    WriteLine("\nList of odd elements: ");
-    WriteLine(string.Join(" ", oddList));
+    Write("List of even elements: " + string.Join(" ", evenList));
+    Write("\nList of odd elements:  " + string.Join(" ", oddList));
 }
 
 static void RunExerciseNine()
@@ -145,24 +128,16 @@ static void RunExerciseNine()
 
 static void RunExerciseTen()
 {
-    WriteLine("Enter 10 numbers of your choosing.");
-    double[] tenRandomNumbers = new double[10];
+    //I wanted to do this exercise with a single input of all the numbers and without having to convert the entire array to a value type
 
-    for (int i = 0; i < 10; i++)
-    {
-        Write($"Number {i + 1}: ");
-        tenRandomNumbers[i] = ToDouble(ReadLine());
-    }
+    Write("Enter 10 numbers of your choosing with one(!) space in between (1 2 3...) : ");
+    string[] inputStringNumbers = ReadLine()!.Trim().Split(" ");  //only accepts commas as decimal markers. Determined by OS settings?
 
-    if (!tenRandomNumbers.Where(x => x < 0).Any())
-        WriteLine("\nNo negative numbers entered.");
-
+    if (!inputStringNumbers.Where(stringNumber => stringNumber[0] == '-' && stringNumber[1] != 0).Any()) //minus followed by a space will produce an IndexOutOfRangeException
+        WriteLine("No negative numbers entered.");
     else
-    {
-        Write("\nThe negative numbers are: ");
-        foreach (double number in tenRandomNumbers.Where(x => x < 0))
-            Write(number + "  ");
-    }
+        WriteLine($"The negative numbers are: " + string.Join(" ", inputStringNumbers.Where(x => double.Parse(x) < 0)));
+    // double.Parse(x) was much more concise than setting the multiple conditions on strings and their characters that are otherwise needed to plug all failure cases. 
 }
 
 static void RunExerciseEleven()
@@ -170,30 +145,23 @@ static void RunExerciseEleven()
     //Typical body temperature is: 36.5–37.5 °C. 
 
     Write("Enter your body temperature in °C: ");
-    float bodyTemp = ToSingle(ReadLine());
+    float bodyTemp = ToSingle(ReadLine());  // single-precision float numbers are more than precise enough for this use-case.
 
     if (bodyTemp >= 36.5 && bodyTemp <= 37.5)
         WriteLine("You don't have a fever");
-    else if (bodyTemp < 36.5 && bodyTemp > 20.0)
-        WriteLine("You have hypothermia.");
-    else if (bodyTemp > 37.5 && bodyTemp < 43)
+    else if (bodyTemp > 37.5 && bodyTemp < 42)
         WriteLine("You have a fever.");
+    else if (bodyTemp < 36.5 && bodyTemp > 28.0)
+        WriteLine("You have hypothermia.");
     else
         WriteLine("Something is wrong.");
 }
 
 static void RunExerciseTwelve()
 {
-    DateTime now = DateTime.Now;
-    int currentYear = now.Year;
-
     Write("Enter the current year: ");
     int inputYear = int.Parse(ReadLine()!);
-
-    if (inputYear == currentYear)
-        WriteLine("Correct");
-    else
-        WriteLine("Incorrect");
+    WriteLine(inputYear == DateTime.Now.Year ? "Correct" : "Incorrect");
 }
 
 static void RunExerciseThirteen()
@@ -210,16 +178,16 @@ static void RunExerciseThirteen()
     switch (inputOperator.KeyChar)
     {
         case '+':
-            WriteLine("{0} + {1} = {2}", operandNum1, operandNum2, operandNum1 + operandNum2);
+            WriteLine($"\n{operandNum1} + {operandNum2} = {operandNum1 + operandNum2}");
             break;
         case '-':
-            WriteLine("{0} - {1} = {2}", operandNum1, operandNum2, operandNum1 - operandNum2);
+            WriteLine($"\n{operandNum1} - {operandNum2} = {operandNum1 - operandNum2}");
             break;
         case '*':
-            WriteLine("{0} * {1} = {2}", operandNum1, operandNum2, operandNum1 * operandNum2);
+            WriteLine($"\n{operandNum1} * {operandNum2} = {operandNum1 * operandNum2}");
             break;
         case '/':
-            WriteLine("{0} / {1} = {2}", operandNum1, operandNum2, operandNum1 / operandNum2);
+            WriteLine($"\n{operandNum1} / {operandNum2} = {operandNum1 / operandNum2}");
             break;
     }
 }
@@ -249,184 +217,152 @@ static void RunExerciseFourteen()
 static void RunExerciseFifteen()
 {
     int inputNum = 0;
-    Write("Enter a number smaller than 100: ");
     do
     {
+        Write("Enter any positive integer smaller than 100: ");
         inputNum = int.Parse(ReadLine()!);
-    } while (inputNum <= 100);
+    } while (inputNum > 100 || inputNum < 1);
 
-    WriteLine("\nUsing for-loops.");
-    Write("All values in ascending order: ");
+    //I know that writing several statements on the same row is a no-no, but maybe there are exceptions?
+    cyanForeGroundColor(); WriteLine("\nUsing for-loops"); greenForeGroundColor();
+    Write("Ascending order: ");
     for (int i = 1; i <= inputNum; i++)
-    {
         Write(i + " ");
-    }
 
     Write("\nDescending order: ");
     for (int i = inputNum; i > 0; i--)
-    {
         Write(i + " ");
-    }
 
-    WriteLine("Using while-loops.");
+    cyanForeGroundColor(); WriteLine("\n\nUsing while-loops"); greenForeGroundColor();
     Write("Ascending order: ");
-    int whileCounter = 1;
-    while (whileCounter <= inputNum) Write(whileCounter++ + " ");
+    int loopCounterExercise15 = 1;
+    while (loopCounterExercise15 <= inputNum)
+        Write(loopCounterExercise15++ + " ");
 
     Write("\nDescending order: ");
-    whileCounter = inputNum;
-    while (whileCounter >= 1) Write(whileCounter-- + " ");
+    loopCounterExercise15 = inputNum;
+    while (loopCounterExercise15 >= 1)
+        Write(loopCounterExercise15-- + " ");
 
-    WriteLine("\nUsing do-while-loops.");
-    int doWhileCounter = 1;
+    cyanForeGroundColor(); WriteLine("\n\nUsing do-while-loops"); greenForeGroundColor();
+    loopCounterExercise15 = 1;
     Write("Ascending order: ");
-    do
-    {
-        Write(doWhileCounter++ + " ");
-    } while (doWhileCounter <= inputNum);
+    do { Write(loopCounterExercise15++ + " "); }
+    while (loopCounterExercise15 <= inputNum);
 
     Write("\nDescending order: ");
-    do
-    {
-        Write(--doWhileCounter + " ");
-    } while (doWhileCounter > 1);
+    do { Write(--loopCounterExercise15 + " "); }
+    while (loopCounterExercise15 > 1);
 }
 
 static void RunExerciseSixteen()
 {
     Write("Enter a date: ");
     DateTime inputDate = ToDateTime(ReadLine());
-    int inputYear = inputDate.Year;
 
-    DateTime currentDate = DateTime.Now;
-    int currentYear = currentDate.Year;
-
-    if (inputYear < currentYear)
+    if (inputDate.Year < DateTime.Now.Year)
         WriteLine("Past year");
-    else if (inputYear > currentYear)
+    else if (inputDate.Year > DateTime.Now.Year)
         WriteLine("Future year");
     else
         WriteLine("Present year");
 
-
+    //alternatively one could use nested ternary conditional operators 
+    // WriteLine(inputDate.Year < DateTime.Now.Year ? "Past year" : inputDate.Year > DateTime.Now.Year ? "Future year" : "Present year");
 }
 
 static void RunExerciseSeventeen()
 {
     // leap years are perfectly divisible by four, but not divisible by 100 unless also divisible by 400
-    DateTime currentDate = DateTime.Now;
-    int currentYear = currentDate.Year;
-    int startYear = 1900;
-    Write("Leap years from 1990 until now: ");
-    while (startYear < currentYear)
+
+    WriteLine("\nLeap years (1900-Now) with for-loop & user-made conditionals: ");
+    for (int i = 1900; i <= DateTime.Now.Year; i += 4)
     {
-        if (startYear % 4 == 0 && startYear % 100 != 0 || startYear % 400 == 0)
-        {
-            Write(startYear + " ");
-        }
-        startYear++;
+        if (i % 100 != 0 || i % 400 == 0)
+            Write(i + " ");
     }
-    WriteLine();
 
-    //or just use the .IsLeapYear method from DateTime -----------------------------------------
+    WriteLine("\n\nLeap years (1900-Now) with a for-loop & IsLeapYear: ");
+    for (int i = 1900; i <= DateTime.Now.Year; i += 4)
+    {
+        if (DateTime.IsLeapYear(i))
+            Write(i + " ");
+    }
 
+    IEnumerable<int> leapYears0 = Enumerable.Range(1900, DateTime.Now.Year - 1900 + 1).Where(x => x % 4 == 0 && x % 100 != 0 || x % 400 == 0); //+1 to include the current year
+    WriteLine("\n\nLeap years (1900-Now) with an enumerator, LINQ, & user-made conditionals: \n" + string.Join(" ", leapYears0));
 
+    IEnumerable<int> leapYears2 = Enumerable.Range(1900, DateTime.Now.Year - 1900 + 1).Where(x => DateTime.IsLeapYear(x));
+    WriteLine("\nLeap years (1900-Now) with an enumerator, LINQ, & IsLeapYear: \n" + string.Join(" ", leapYears2));
 }
 
 static void RunExerciseEighteen()
 {
-    int guessedNumber;
     Random randomNumber = new();
-    int secretNumber = randomNumber.Next(10); //sets the range from 0 to 9
+    int guessedNumber = -1, secretNumber = randomNumber.Next(10); //sets the range from 0 to 9
     string? answer = "yes";
     do
     {
         Write("Guess a number from 0 to 9: ");
         guessedNumber = ToInt32(ReadLine());
+
         if (secretNumber == guessedNumber)
             WriteLine("You guessed right!");
         else
         {
             WriteLine("You guessed wrong!");
-            Write("Type yes to continue guessing: ");
+            Write("\nDo you want to stop guessing? (Yes/No) ");
             answer = ReadLine();
         }
 
-    } while (secretNumber != guessedNumber && answer == "yes");
-
-
+    } while (secretNumber != guessedNumber && answer!.ToLower() != "yes");
 }
 
 static void RunExerciseNineteen()
 {
-    //Print reverse pyramid. Top layer starts at 5 stars
+    //Print reverse pyramid. # of stars in the top layer = # of layers
 
-    // * * * * *  zero initial whitespaces, four whitespaces, five stars  
-    //  * * * *   one initial whitespace, four whitespaces, four stars
-    //   * * *    two initial whitespaces, four whitespaces, 3 stars
-    //    * *     .......
-    //     *
+    //* * * * *  0 initial whitespaces,  5 stars  
+    // * * * *   1 initial whitespace,   4 stars
+    //  * * *    2 initial whitespaces,  3 stars
+    //   * *     .......
+    //    *      4 initial whitespaces,  1 stars
 
-    // char star = '*';
-
-    int topLayerOfStars = 5;
-    for (int i = topLayerOfStars; i > 0; i--) //should iterate to the number of stars in the top layer
+    Write("Time for creating a pyramid!\nHow many layers do you want it to have? ");
+    int pyramidLayers = ToInt32(ReadLine());
+    for (int i = pyramidLayers; i > 0; i--)
     {
-        for (int j = 0; j < topLayerOfStars - i; j++) //should start at 0 and increase to number (topLayerOfStars - i) 
-        {
+        for (int j = 0; j < pyramidLayers - i; j++) //initial whitespaces
             Write(" ");
-        }
-
-        for (int k = i; k > 0; k--) //should start at number of stars in the top layer 
-        {
-            Write('*');
-            Write(" ");
-        }
-        WriteLine();
+        for (int k = i; k > 0; k--) //star generator
+            Write("* ");
+        WriteLine();    //switches layer
     }
-
-
 }
 
 static void RunExerciseTwenty()
 {
     // Write a program that keeps asking the user to enter numbers, until he enters -1. Then displays a sum and average of all numbers entered before -1
 
-    int sum = 0;
-    int inputNumber = 0;
-    int elementCounter = 0;
+    int sum = 0, inputNumber = 0, elementCounter = 0;
     do
     {
-        Write("Input a number or input -1 to print the sum: ");
+        Write("Input a number or input -1 to print the sum of inputted numbers: ");
 
         sum += inputNumber;
         inputNumber = ToInt32(ReadLine());
         elementCounter++;
     } while (inputNumber != -1);
 
-    // double average = sum / (double)elementCounter;
-    WriteLine();
-    WriteLine("The sum is {0}", sum);
-    WriteLine("The average is {0}", sum / (double)elementCounter - 1);
-
-
+    WriteLine("\nThe sum is {0}", sum);
+    WriteLine("The average is {0}", (double)sum / (elementCounter - 1));
 }
 
-int RunExerciseTwentyOne(int fibNum, int fibStart = 0)
+int RunExerciseTwentyOne(int fibNum)
 {
-    /*Exercise 21 (Optional) 
-
-    Write a program to print the Fibonacci series */
-    //first call on its own method recursively until fibNum == 0 and then go back up to calculate the values consecutively.
-    //How to set a condition for this?
-
-    if (fibNum < 1)
-    {
-        return fibNum;
-    }
-    else
-
-        return RunExerciseTwentyOne(fibNum - 1) + RunExerciseTwentyOne(fibNum - 2);
+    if (fibNum < 2)
+        return fibNum; ;
+    return RunExerciseTwentyOne(fibNum - 1) + RunExerciseTwentyOne(fibNum - 2);
 }
 
 static void RunExerciseTwentyTwo()
@@ -435,31 +371,28 @@ static void RunExerciseTwentyTwo()
     double height = ToDouble(ReadLine());
     Write("Insert the width of the triangle: ");
     double width = ToDouble(ReadLine());
-    WriteLine($"Area of the triangle is: {height * width / 2}");
-
-
+    WriteLine($"\nArea of the triangle is: {height * width / 2}");
 }
 
 static void RunExerciseTwentyThree()
 {
     //this exercise is about overloading methods. They must be defined in a separate class as they cannot be declared in the main function (or the functional equivalent).
+    decimal d1 = 1.75m, d2 = 2.64m, d3 = 3.91m, d4 = -4.13m; //rounding errors appear if I use double
 
-    double d1 = 1.75, d2 = 2.64, d3 = 3.91, d4 = 4.13;
-
-    WriteLine(ExerciseMethods.AddNumbers(d1, d2));
-    WriteLine(ExerciseMethods.AddNumbers(d1, d2, d3));
-    WriteLine(ExerciseMethods.AddNumbers(d1, d2, d3, d4));
+    ExerciseClass.AddNumbers(d1, d2);
+    ExerciseClass.AddNumbers(d1, d2, d3);
+    ExerciseClass.AddNumbers(d1, d2, d3, d4);
 }
 
 static void RunExerciseTwentyFour()
 {
-    int[] ex1 = { 1, 2, 3, 4, 5 }; //expected output: 5
-    int[] ex2 = { 1, 530202, -903, 3, -1, 86 }; //expected output: 530202
-    int[] ex3 = { 1, 23 * 23, -5303, 353, -1, 86 }; // expected output: 23*23  (529)
+    int[] exArray1 = { 1, 2, 3, 4, 5 }; //expected output: 5
+    int[] exArray2 = { 1, 530202, -903, 3, -1 }; //expected output: 530202
+    int[] exArray3 = { 1, 23 * 23, -5303, 353, -1 }; // expected output: 23*23  (529)
 
-    WriteLine(ExerciseMethods.GreatestNumber(ex1));
-    WriteLine(ExerciseMethods.GreatestNumber(ex2));
-    WriteLine(ExerciseMethods.GreatestNumber(ex3));
+    WriteLine(ExerciseClass.GreatestNumber(exArray1));
+    WriteLine(ExerciseClass.GreatestNumber(exArray2));
+    WriteLine(ExerciseClass.GreatestNumber(exArray3));
 }
 
 static void RunExerciseTwentyFive()
@@ -469,8 +402,9 @@ static void RunExerciseTwentyFive()
     Write("Insert number B: ");
     double b = ToDouble(ReadLine());
     WriteLine("Swapping....");
-    ExerciseMethods.SwapExercise25(a, b);
-    WriteLine($"Value A is still {a} outside the function and value B is still {b} outside the fuction.");
+
+    SwapExercise25(a, b);
+    WriteLine($"Number A is still {a} outside the function and number B is still {b} outside the fuction.");
 }
 
 static void RunExerciseTwentySix()
@@ -481,68 +415,42 @@ static void RunExerciseTwentySix()
     double b = ToDouble(ReadLine());
     WriteLine("Swapping....");
 
-    ExerciseMethods.SwapExercise26(ref a, ref b);
-    WriteLine($"Value A is now also {a} outside the function and value B is now also {b} outside the fuction.");
-
-    // double A = a, B = b;
-    // ExerciseMethods.SwapExercise26(a, b, out A, out B); //using out
+    SwapExercise26(ref a, ref b);
+    WriteLine($"Number A is now also {a} outside the function and number B is now also {b} outside the fuction.");
 }
 
 static void RunExerciseTwentySeven()
 {
     Write("Insert a string: ");
     string? inputString = ReadLine();
-    char[] inputCharArray = inputString.ToCharArray();
 
-    // alt 1
     int palindromeCount = 0;
-    for (int i = 0; i < inputCharArray.Length / 2; i++)
-    {
-        if (inputCharArray[i] == inputCharArray[^(i + 1)]) palindromeCount++;
-    }
-    if (palindromeCount == (inputCharArray.Length / 2)) WriteLine("The string is a palindrome!");
-    else WriteLine("The string is *not* a palindrome!");
-
-    //alt 2
-    //use split instead and assign to a string[] and compare them after the reversal?
-
-    // [0..^0]
-    // char[] firstPart = inputCharArray[..];
-    // char[] secondPart = inputCharArray[inputCharArray.Length / 2];
-    // WriteLine(secondPart);
-    // secondPart = (string)secondPart.Reverse();
-    // WriteLine(firstPart);
-    // WriteLine(secondPart);
-
-    // string[] splitString = inputString.Split(inputString.Length / 2);
-
-    // if (inputString.Substring(inputString.Length / 2) == inputString.Substring(0, inputString.Length / 2).Reverse())
-    //GetEnumerable() or just use Convert.ToCharArray().
-
-    // if (firstPart == secondPart) WriteLine("The string is a palindrome!");
-    // else WriteLine("The string is *not* a palindrome!");
+    for (int i = 0; i < inputString!.Length / 2; i++)
+        if (inputString[i] == inputString[^(i + 1)]) palindromeCount++;
+    Write(palindromeCount == (inputString.Length / 2) ? "The string is a palindrome!" : "The string is *not* a palindrome!");
 }
 
 static void RunExerciseTwentyEight()
-
 {
-    WriteLine("Enter 12 positive integer numbers: ");
+    Write("Enter 12 positive integer numbers with one(!) space in between: ");
+    string[] inputIntegersString = ReadLine()!.Trim().Split(" ");
+    Write("You entered: " + string.Join(" ", inputIntegersString));
 
-    uint[] inputIntegers = new uint[12];
-    for (uint u = 0; u < inputIntegers.Length; u++)
-    {
-        inputIntegers[u] = ToUInt32(ReadLine());
-    }
-    Write("You entered: ");
-    WriteLine(string.Join(" ", inputIntegers));
+    int[] inputIntegerArray = new int[inputIntegersString.Length];
+    for (int i = 0; i < inputIntegersString.Length; i++)
+        inputIntegerArray[i] = int.Parse(inputIntegersString[i]);
 
-    var evenNumbers = inputIntegers.Where(x => x % 2 == 0).ToArray();
-    var oddNumbers = inputIntegers.Where(x => x % 2 == 1).ToArray();
+    int[] evenIntegerArray = inputIntegerArray.Where(x => x % 2 == 0).ToArray();
+    int[] oddIntegerArray = inputIntegerArray.Where(x => x % 2 == 1).ToArray();
 
-    Write("Even numbers: ");
-    WriteLine(string.Join(" ", evenNumbers));
-    Write("Odd numbers: ");
-    WriteLine(string.Join(" ", oddNumbers));
+    WriteLine("\n\nEven numbers: ");
+    foreach (int num in evenIntegerArray) Write(num + " ");
+    WriteLine("\nOdd numbers: ");
+    foreach (int num in oddIntegerArray) Write(num + " ");
+
+    //Concise way to print all even and odd numbers directly. 
+    // WriteLine("\nEven numbers: " + string.Join(" ", inputIntegersString.ToArray().Where(x => int.Parse(x) % 2 == 0)));
+    // WriteLine("Odd numbers: " + string.Join(" ", inputIntegersString.ToArray().Where(x => int.Parse(x) % 2 == 1)));
 }
 
 static void RunExerciseTwentyNine()
@@ -644,6 +552,9 @@ static void RunExerciseThirtyOne()
 
     Write("New array generated: ");
     Write(string.Join(" ", derivedArray));
+
+    //IEnumerable<int> squares = Enumerable.Range(1, 10).Select(x => x * x); //and then print with string.Join or .ForEach ?!?!?!?!?
+
 }
 
 static void RunExerciseThirtyTwo()
@@ -671,7 +582,8 @@ static void RunExerciseThirtyThree()
 
     // Longer solution showing other ways to accomplish the same task.
     // WriteLine("Question A: Original text: " + questionA);
-    // questionA = questionA.Replace("quick", "brown").Replace("J", "j").Replace("Over", "over").Substring(0, questionA.IndexOf('D')) + "lazy " + questionA.Substring(questionA.IndexOf("D"), questionA.IndexOf("G") - questionA.IndexOf("D") + 1).ToLower();
+    // questionA = questionA.Replace("quick", "brown").Replace("J", "j").Replace("Over", "over").Substring(0, questionA.IndexOf('D')) + "lazy " + 
+    // questionA.Substring(questionA.IndexOf("D"), questionA.IndexOf("G") - questionA.IndexOf("D") + 1).ToLower();
     // WriteLine("Question A: Altered text: " + questionA);
 
     //B) - Enter any two words from console and check whether they are same words or not
@@ -684,7 +596,6 @@ static void RunExerciseThirtyThree()
         WriteLine("They are the same word!");
     else
         WriteLine("They are *not* the same word");
-
 
     //C) - Input word Donkey and display it as the word Monkey on the console.
     string questionC = "Donkey";
@@ -730,7 +641,7 @@ static void RunExerciseThirtyFour()
 {
     Write("Enter your date of birth (format: yyyy-mm-dd): ");
     string? dateOfBirthString34 = ReadLine();
-    int? age = ExerciseMethods.CalculateAge(dateOfBirthString34!);
+    int? age = ExerciseClass.CalculateAge(dateOfBirthString34!);
     WriteLine($"You are {age} years old");
 
     //add .Weekday and say "you were born on a {dateOfBirth.Weekday} and are x years old". ?
@@ -742,9 +653,10 @@ static void RunExerciseThirtyFive()
     string[] firstAndLastName = ReadLine()!.Split(" "); //format Firstname Lastname - add local-culture compatibility??
     Write($"Greetings {firstAndLastName[0]} {firstAndLastName[1]}, when were you born? ");
     string? birthDate = ReadLine();
+
     Customer newCustomer = new(birthDate!, firstAndLastName[0] + " " + firstAndLastName[1]);
     BarCounter newCustomerTab = new(newCustomer);
-
+    // WriteLine(newCustomer.IsOfDrinkingAge);
 }
 
 static void RunExerciseThirtySix()
@@ -857,7 +769,8 @@ while (keepAlive)
             case 21:
                 Write("How many digits of the fibonacci sequence do you want to compute?: ");
                 int fibonacciDigits = ToInt32(ReadLine());
-                WriteLine(RunExerciseTwentyOne(fibonacciDigits));
+                for (int i = 0; i < fibonacciDigits; i++)
+                    Write(RunExerciseTwentyOne(i) + " ");
                 break;
             case 22:
                 RunExerciseTwentyTwo();
@@ -916,7 +829,7 @@ while (keepAlive)
                 break;
         }
         ResetColor();
-        WriteLine("Hit any key to continue..");
+        Write("\nHit any key to continue..");
         ReadKey();
         Clear();
     }
@@ -928,19 +841,19 @@ while (keepAlive)
     }
 }
 
-public class ExerciseMethods
+public class ExerciseClass
 {
-    public static double AddNumbers(double one, double two)
+    public static void AddNumbers(decimal one, decimal two)
     {
-        return one + two;
+        WriteLine(one + two);
     }
-    public static double AddNumbers(double one, double two, double three)
+    public static void AddNumbers(decimal one, decimal two, decimal three)
     {
-        return one + two + three;
+        WriteLine(one + two + three);
     }
-    public static double AddNumbers(double one, double two, double three, double four)
+    public static void AddNumbers(decimal one, decimal two, decimal three, decimal four)
     {
-        return one + two + three + four;
+        WriteLine(one + two + three + four);
     }
     public static int GreatestNumber(int[] array)
     {
@@ -954,38 +867,23 @@ public class ExerciseMethods
         //Alternative 3
         // int highestNumber = int.MinValue;
         // foreach (int i in array)
-        // {
         //     if (i > highestNumber) highestNumber = i;
-        // }
         // return highestNumber;
-
     }
     public static void SwapExercise25(double a, double b)
     {
         double temp = b;
         b = a;
         a = temp;
-
-        WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
+        WriteLine($"\nNumber A is now {a} inside the function and number B is now {b} inside the fuction.");
     }
     public static void SwapExercise26(ref double a, ref double b)
     {
         double temp = b;
         b = a;
         a = temp;
-        WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
+        WriteLine($"\nNumber A is now {a} inside the function and number B is now {b} inside the fuction.");
     }
-
-    // public static void SwapExercise26(double a, double b, out double A, out double B) //using out instead
-    // {
-    //     double temp = b;
-    //     b = a;
-    //     a = temp;
-    //     A = a;
-    //     B = b;
-    //     WriteLine($"Value A is now {a} inside the function and value B is now {b} inside the fuction.");
-    // }
-
     public static int CalculateAge(string dateOfBirthString)
     {
         //add ability to enter in any format
@@ -1002,8 +900,22 @@ public class ExerciseMethods
 
         return age;
     }
+    public static void cyanForeGroundColor()
+    {
+        if (ForegroundColor != ConsoleColor.Cyan)
+            ForegroundColor = ConsoleColor.Cyan;
+    }
+    public static void greenForeGroundColor()
+    {
+        if (ForegroundColor != ConsoleColor.Green)
+            ForegroundColor = ConsoleColor.Green;
+    }
 }
 
+public static class LocalJurisdiction
+{
+    public static readonly int legalDrinkingAge = 18;
+}
 public class BarCounter
 {
     static string[] allBeverages = { "beer", "coke" };
@@ -1013,7 +925,7 @@ public class BarCounter
 
     public BarCounter(Customer customer)
     {
-        if (customer.isOfDrinkingAge == true)
+        if (customer.IsOfDrinkingAge == true)
             GetOrder(allBeverages);
         else
             GetOrder(childBeverages);
@@ -1025,32 +937,31 @@ public class BarCounter
             Write("Do you want to order a " + beverages[i] + ": ");
             CustomerAnswer = ReadLine();
 
-            if (CustomerAnswer!.Equals("Yes", InvariantCultureIgnoreCase))
+            if (CustomerAnswer!.ToUpper() == "YES")
             {
                 ServeOrder(beverages[i]);
                 break;
             }
         }
     }
-    private void ServeOrder(string beverage)
+    private static void ServeOrder(string beverage)
     {
         WriteLine("Serving " + beverage + "!");
     }
 }
-
-public class Customer : ExerciseMethods
+public class Customer //inheritance from ExerciseClass is not needed to use the CalculateAge method because of "using static ExerciseClass;"
 {
     public string Name { get; set; }
-    private int Age { get; set; }
-    public readonly bool isOfDrinkingAge;
-    // public double TotalPurchases { get; set; }
-    public double TotalPurchases;
+    private readonly int Age;
+    private bool isOfDrinkingAge;
+    public bool IsOfDrinkingAge
+    {
+        get { return isOfDrinkingAge; }
+        set { isOfDrinkingAge = Age > LocalJurisdiction.legalDrinkingAge; }
+    }
     public Customer(string birthDateString, string name = "anonymous customer")
     {
-        TotalPurchases = 23.0;
         Name = name;
         Age = CalculateAge(birthDateString);
-        if (Age >= 18)
-            isOfDrinkingAge = true;
     }
 }
