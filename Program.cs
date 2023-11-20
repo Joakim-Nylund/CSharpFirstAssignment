@@ -1,9 +1,4 @@
 ﻿using System.Buffers;
-using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.RegularExpressions;
 using static ExerciseClass; //I added this class
 using static System.Console;
 using static System.Convert;
