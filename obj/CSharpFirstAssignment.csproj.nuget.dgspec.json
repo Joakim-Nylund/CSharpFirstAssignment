@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj": {}
+    "C:\\Users\\Student\\source\\repos\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj": {}
   },
   "projects": {
-    "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj": {
+    "C:\\Users\\Student\\source\\repos\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
+        "projectUniqueName": "C:\\Users\\Student\\source\\repos\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
         "projectName": "CSharpFirstAssignment",
-        "projectPath": "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
-        "packagesPath": "C:\\Users\\Joakims inloggning\\.nuget\\packages\\",
-        "outputPath": "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\obj\\",
+        "projectPath": "C:\\Users\\Student\\source\\repos\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
+        "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Student\\source\\repos\\CSharpFirstAssignment\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Joakims inloggning\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Student\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -50,30 +50,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.25, 6.0.25]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.25, 6.0.25]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.25, 6.0.25]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.25, 6.0.25]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -8,6 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CSharpFirstAssignment
-build_property.ProjectDir = E:\Joakim\Documents\VSCodeprogram\C_Sharp_Core6_Basic_First_Assignment\CSharpFirstAssignment\
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.ProjectDir = C:\Users\Student\source\repos\CSharpFirstAssignment\

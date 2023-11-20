@@ -1,6 +1,8 @@
 ﻿using System.Buffers;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using static ExerciseClass; //I added this.
 using static System.Console;
 using static System.Convert;
@@ -48,10 +50,10 @@ static void RunExerciseFour()
     IFormatProvider esCulture = new System.Globalization.CultureInfo("es-ESP", true); //for fun
     string[] currentMomentDateTimeFormats = DateTime.Now.GetDateTimeFormats(esCulture); //defaults to OS settings if no argument is passed.
 
-    cyanForeGroundColor();
+    CyanForeGroundColor();
     WriteLine("\nAll alternative Spanish date & time formats: ");
     WriteLine(string.Join("\n", currentMomentDateTimeFormats.Distinct())); //.Distinct() added because of duplicates
-    greenForeGroundColor();
+    GreenForeGroundColor();
 }
 
 static void RunExerciseFive()
@@ -224,7 +226,7 @@ static void RunExerciseFifteen()
     } while (inputNum > 100 || inputNum < 1);
 
     //I know that writing several statements on the same row is a no-no, but maybe there are exceptions?
-    cyanForeGroundColor(); WriteLine("\nUsing for-loops"); greenForeGroundColor();
+    CyanForeGroundColor(); WriteLine("\nUsing for-loops"); GreenForeGroundColor();
     Write("Ascending order: ");
     for (int i = 1; i <= inputNum; i++)
         Write(i + " ");
@@ -233,7 +235,7 @@ static void RunExerciseFifteen()
     for (int i = inputNum; i > 0; i--)
         Write(i + " ");
 
-    cyanForeGroundColor(); WriteLine("\n\nUsing while-loops"); greenForeGroundColor();
+    CyanForeGroundColor(); WriteLine("\n\nUsing while-loops"); GreenForeGroundColor();
     Write("Ascending order: ");
     int loopCounterExercise15 = 1;
     while (loopCounterExercise15 <= inputNum)
@@ -244,7 +246,7 @@ static void RunExerciseFifteen()
     while (loopCounterExercise15 >= 1)
         Write(loopCounterExercise15-- + " ");
 
-    cyanForeGroundColor(); WriteLine("\n\nUsing do-while-loops"); greenForeGroundColor();
+    CyanForeGroundColor(); WriteLine("\n\nUsing do-while-loops"); GreenForeGroundColor();
     loopCounterExercise15 = 1;
     Write("Ascending order: ");
     do { Write(loopCounterExercise15++ + " "); }
@@ -275,25 +277,25 @@ static void RunExerciseSeventeen()
 {
     // leap years are perfectly divisible by four, but not divisible by 100 unless also divisible by 400
 
-    WriteLine("\nLeap years (1900-Now) with for-loop & user-made conditionals: ");
-    for (int i = 1900; i <= DateTime.Now.Year; i += 4)
+    WriteLine("\nLeap years (1990-Now) with for-loop & user-made conditionals: ");
+    for (int i = 1990; i <= DateTime.Now.Year; i += 4)
     {
         if (i % 100 != 0 || i % 400 == 0)
             Write(i + " ");
     }
 
-    WriteLine("\n\nLeap years (1900-Now) with a for-loop & IsLeapYear: ");
-    for (int i = 1900; i <= DateTime.Now.Year; i += 4)
+    WriteLine("\n\nLeap years (1990-Now) with a for-loop & IsLeapYear: ");
+    for (int i = 1990; i <= DateTime.Now.Year; i += 4)
     {
         if (DateTime.IsLeapYear(i))
             Write(i + " ");
     }
 
-    IEnumerable<int> leapYears0 = Enumerable.Range(1900, DateTime.Now.Year - 1900 + 1).Where(x => x % 4 == 0 && x % 100 != 0 || x % 400 == 0); //+1 to include the current year
-    WriteLine("\n\nLeap years (1900-Now) with an enumerator, LINQ, & user-made conditionals: \n" + string.Join(" ", leapYears0));
+    IEnumerable<int> leapYears0 = Enumerable.Range(1990, DateTime.Now.Year - 1990 + 1).Where(x => x % 4 == 0 && x % 100 != 0 || x % 400 == 0); //+1 to include the current year
+    WriteLine("\n\nLeap years (1990-Now) with an enumerator, LINQ, & user-made conditionals: \n" + string.Join(" ", leapYears0));
 
-    IEnumerable<int> leapYears2 = Enumerable.Range(1900, DateTime.Now.Year - 1900 + 1).Where(x => DateTime.IsLeapYear(x));
-    WriteLine("\nLeap years (1900-Now) with an enumerator, LINQ, & IsLeapYear: \n" + string.Join(" ", leapYears2));
+    IEnumerable<int> leapYears2 = Enumerable.Range(1990, DateTime.Now.Year - 1990 + 1).Where(x => DateTime.IsLeapYear(x));
+    WriteLine("\nLeap years (1990-Now) with an enumerator, LINQ, & IsLeapYear: \n" + string.Join(" ", leapYears2));
 }
 
 static void RunExerciseEighteen()
@@ -358,11 +360,12 @@ static void RunExerciseTwenty()
     WriteLine("The average is {0}", (double)sum / (elementCounter - 1));
 }
 
-int RunExerciseTwentyOne(int fibNum)
+static void RunExerciseTwentyOne()
 {
-    if (fibNum < 2)
-        return fibNum; ;
-    return RunExerciseTwentyOne(fibNum - 1) + RunExerciseTwentyOne(fibNum - 2);
+    Write("How many digits of the fibonacci sequence do you want to compute?: ");
+    int fibonacciDigits = ToInt32(ReadLine());
+    for (int i = 0; i < fibonacciDigits; i++)
+        Write(CalculateFibonacci(i) + " ");
 }
 
 static void RunExerciseTwentyTwo()
@@ -379,9 +382,9 @@ static void RunExerciseTwentyThree()
     //this exercise is about overloading methods. They must be defined in a separate class as they cannot be declared in the main function (or the functional equivalent).
     decimal d1 = 1.75m, d2 = 2.64m, d3 = 3.91m, d4 = -4.13m; //rounding errors appear if I use double
 
-    ExerciseClass.AddNumbers(d1, d2);
-    ExerciseClass.AddNumbers(d1, d2, d3);
-    ExerciseClass.AddNumbers(d1, d2, d3, d4);
+    AddNumbers(d1, d2);
+    AddNumbers(d1, d2, d3);
+    AddNumbers(d1, d2, d3, d4);
 }
 
 static void RunExerciseTwentyFour()
@@ -390,9 +393,9 @@ static void RunExerciseTwentyFour()
     int[] exArray2 = { 1, 530202, -903, 3, -1 }; //expected output: 530202
     int[] exArray3 = { 1, 23 * 23, -5303, 353, -1 }; // expected output: 23*23  (529)
 
-    WriteLine(ExerciseClass.GreatestNumber(exArray1));
-    WriteLine(ExerciseClass.GreatestNumber(exArray2));
-    WriteLine(ExerciseClass.GreatestNumber(exArray3));
+    WriteLine(GreatestNumber(exArray1));
+    WriteLine(GreatestNumber(exArray2));
+    WriteLine(GreatestNumber(exArray3));
 }
 
 static void RunExerciseTwentyFive()
@@ -460,34 +463,27 @@ static void RunExerciseTwentyNine()
     Random randomNumber = new();
 
     for (int i = 0; i < randomArray.Length; i++)
-        randomArray[i] = randomNumber.Next(100); //for the sake of output readability, the maxValue is set to 100
+        randomArray[i] = randomNumber.Next(10, 100); // 10<= randomArray[i] < 100 : for the sake of output readability and easy comparison
 
-    Write("Created array: ");
-    WriteLine(string.Join(" ", randomArray));
+    WriteLine("Created array:          " + string.Join(" ", randomArray));
 
     //alt 1 - using the FindAll method of the static Array class and then concatenating the results
     int[] evenNumbers = Array.FindAll(randomArray, x => x % 2 == 0); //returns all even numbers
     int[] oddNumbers = Array.FindAll(randomArray, x => x % 2 == 1); //returns all odd numbers
-
     evenFirstOddSecond = evenNumbers.Concat(oddNumbers).ToArray(); //Conversion could be expensive....
 
-    //or
+    //alt 2
     // evenNumbers.CopyTo(evenFirstOddSecond, 0);
     // oddNumbers.CopyTo(evenFirstOddSecond, evenNumbers.Length);
 
-    //alt 2
+    //alt 3
     // int elementCounter = 0;
     // foreach (int i in randomArray.Where(x => x % 2 == 0))
-    // {
     //     evenFirstOddSecond[elementCounter++] = i;
-    // }
     // foreach (int i in randomArray.Where(x => x % 2 == 1))
-    // {
     //     evenFirstOddSecond[elementCounter++] = i;
-    // }
 
-    Write("Even first, odd second: ");
-    WriteLine(string.Join(" ", evenFirstOddSecond));
+    WriteLine("Even first, odd second: " + string.Join(" ", evenFirstOddSecond));
 }
 
 static void RunExerciseThirty()
@@ -495,79 +491,111 @@ static void RunExerciseThirty()
     // Create an array. Set the size of an array as a random number between 5 and 15. Sort this array without using sort method.
     Random randomNumber = new();
 
-    int[] arrayFiveFifteen = new int[randomNumber.Next(5, 15)];
+    int[] arrayFiveFifteen = new int[randomNumber.Next(6, 15)]; //6 because minValue is included, maxValue is not.
     for (int i = 0; i < arrayFiveFifteen.Length; i++)
         arrayFiveFifteen[i] = randomNumber.Next(100); //for the sake of output readability, the maxValue is set to 100
 
-    int swapHolder;
+    WriteLine("Generated array: " + string.Join(" ", arrayFiveFifteen));
 
-    Write("Generated array: ");
-    WriteLine(string.Join(" ", arrayFiveFifteen));
 
-    //Bubble-sort. Time complexity: O(n^2)). Space complexity: O(1).  - I know bubble-sort is bad, but it's the only one I know.
-    for (int j = 0; j < Math.Pow(arrayFiveFifteen.Length, 2); j++)
-    {
-        for (int i = 0; i < arrayFiveFifteen.Length - 1; i++)
-        {
-            if (arrayFiveFifteen[i] > arrayFiveFifteen[i + 1])
-            {
-                swapHolder = arrayFiveFifteen[i];
-                arrayFiveFifteen[i] = arrayFiveFifteen[i + 1];
-                arrayFiveFifteen[i + 1] = swapHolder;
-            }
-        }
-    }
-    //Quicker sorting method algorithm - add later?
+    //Improvised primitive bubble-sort(of). Time complexity: O(n^2)). Space complexity: O(1). I know bubble-sort is bad, but it's the only one I know.
+    int[] sortedArray = BubbleSort(arrayFiveFifteen);
 
-    Write("Sorted array:    ");
-    WriteLine(string.Join(" ", arrayFiveFifteen));
+    WriteLine("Sorted array:    " + string.Join(" ", sortedArray));
 }
 
 static void RunExerciseThirtyOne()
 {
-    // Create an array.Set the size of an array as a random number smaller than 16. Fill in the array with random numbers(positive, smaller than 100, not repeated).
-    // Create another array of the same size and ask the user if he / she wants to fill in the array with either square or cube result of the values from previous array.
-
+    //I interpreted the requirement "not repeated" as pertaining to the array as a whole. I therefore check for duplicates.
     Random randomNumber = new();
-    int[] randomArray = new int[randomNumber.Next(16)]; //use distinct
+    int[] randomArray = new int[randomNumber.Next(1, 16)];
 
     int numberToAdd;
     for (int i = 0; i < randomArray.Length; i++)
     {
         numberToAdd = randomNumber.Next(100);
-        if (numberToAdd != Array.Find(randomArray, x => x == numberToAdd)) //only adds it if it doesn't already exist in the array
+        if (numberToAdd != Array.Find(randomArray, x => x == numberToAdd)) //duplicate check
             randomArray[i] = numberToAdd;
-        else i--; //if it does exist, we need to iterate on the same index again and generate a new random number for it.
+        else i--; //if a duplicate does exist, we need to repeat the process for this element.
     }
 
-    Write("Generated array: ");
-    Write(string.Join(" ", randomArray));
+    Write("Generated array: " + string.Join(" ", randomArray));
+    Write("\nDo you want to square or cube these values? Type (square/cube): "); //I wanted to try solving for a string input instead of just numbers.
+    string exponentString = ReadLine()!.ToLower();
+    int power = 0;
+    do
+    {
+        if (exponentString == "square")
+            power = 2;
+        else if (exponentString == "cube")
+            power = 3;
+        else
+        {
+            Write("\nWrong input, try again (square/cube): ");
+            exponentString = ReadLine()!.ToLower();
+        }
+    } while (power != 2 && power != 3); //Previously attempted condition (power != 2 || power != 3)  seemed to cause a fall through for power ==2 and power == 3.
 
-    Write("\nDo you want to square or cube these values? Type 2 to square or 3 to cube: ");
-    int power = ToInt32(ReadLine());
-    int[] derivedArray = new int[randomArray.Length];
+    //alternative solution using a simple for-loop
+    // int[] derivedArray = new int[randomArray.Length];
+    // for (int i = 0; i < randomArray.Length; i++)
+    //     derivedArray[i] = (int)Math.Pow(randomArray[i], power);
 
-    for (int i = 0; i < randomArray.Length; i++)
-        derivedArray[i] = (int)Math.Pow(randomArray[i], power);
+    //alternative solution using CopyTo and ForEach
+    // int[] derivedArray = new int[randomArray.Length];
+    // randomArray.CopyTo(derivedArray, 0);
+    // Array.ForEach(derivedArray, x => x = (int)Math.Pow(x, power));
 
-    Write("New array generated: ");
-    Write(string.Join(" ", derivedArray));
-
-    //IEnumerable<int> squares = Enumerable.Range(1, 10).Select(x => x * x); //and then print with string.Join or .ForEach ?!?!?!?!?
-
+    int[] derivedArray = randomArray.Select(x => (int)Math.Pow(x, power)).ToArray();    //my favorite solution
+    Write($"{exponentString.Replace(exponentString[0], char.ToUpper(exponentString[0])) + "d"} array: " + string.Join(" ", derivedArray));
 }
 
 static void RunExerciseThirtyTwo()
 {
-    Write("Insert a string with comma-separated number: ");
-    string[] numberSnippets = ReadLine().Split(',');
-    int[] numbers = new int[numberSnippets.Length];
-    for (int i = 0; i < numberSnippets.Length; i++)
-        numbers[i] = int.Parse(numberSnippets[i]);
+    // Write("Insert a string of comma-separated number: ");
+    // string[] numberSnippets = ReadLine()!.Split(',');
+    // int[] numbers = numberSnippets.Select(x => int.Parse(x)).ToArray();
 
-    WriteLine("Lowest value is: " + numbers.Min());
-    WriteLine("Highest value is: " + numbers.Max());
-    WriteLine("Average value is: " + numbers.Average());
+    //alternatively
+    // int[] numbers = new int[numberSnippets.Length];
+    // for (int i = 0; i < numberSnippets.Length; i++)
+    //     numbers[i] = int.Parse(numberSnippets[i]);
+
+
+    //alternative using StringBuilder
+    Write("Insert a string of comma-separated numbers: ");
+    char[] numberChars = ReadLine()!.ToCharArray();
+
+    StringBuilder numberBuilder = new();
+    for (int i = 0; i < numberChars.Length; i++)
+        numberBuilder.Append(numberChars[i]);
+
+    string builtString = numberBuilder.ToString();
+    WriteLine("\nIn a string: " + builtString);
+
+    // string[]  maybe it's possible to skip the string[] step. Simply assign the elements of an int[] to different substrings parsed as integers?
+
+    int startIndex = 0;
+    int arrayIndex = 0;
+    int[] numbers = new int[builtString.Where(x => x == ',').Count()];
+    do
+    {
+        numbers[arrayIndex++] = int.Parse(builtString.Substring(startIndex, builtString.IndexOf(','))); //
+        builtString = builtString.Substring(startIndex, builtString.IndexOf(','));
+        startIndex = int.Parse(builtString.Substring(startIndex, builtString.IndexOf(','))); //sets the startIndex past the current comma
+        //I have to assign it to the substring to avoid recursive statements inside int.Parse()
+
+    } while (startIndex != builtString.LastIndexOf(','));
+
+    WriteLine("int[] numbers: " + string.Join(" ", numbers));
+
+
+    //Better alternative??????
+    // IList<string[]> numberList = new List<string[]>();    -- AsQueryable ?
+
+    // WriteLine("Lowest value is: " + numbers.Min());
+    // WriteLine("Highest value is: " + numbers.Max());
+    // WriteLine("Average value is: " + numbers.Average());
 }
 
 static void RunExerciseThirtyThree()
@@ -767,10 +795,7 @@ while (keepAlive)
                 RunExerciseTwenty();
                 break;
             case 21:
-                Write("How many digits of the fibonacci sequence do you want to compute?: ");
-                int fibonacciDigits = ToInt32(ReadLine());
-                for (int i = 0; i < fibonacciDigits; i++)
-                    Write(RunExerciseTwentyOne(i) + " ");
+                RunExerciseTwentyOne();
                 break;
             case 22:
                 RunExerciseTwentyTwo();
@@ -900,15 +925,38 @@ public class ExerciseClass
 
         return age;
     }
-    public static void cyanForeGroundColor()
+    public static void CyanForeGroundColor()
     {
         if (ForegroundColor != ConsoleColor.Cyan)
             ForegroundColor = ConsoleColor.Cyan;
     }
-    public static void greenForeGroundColor()
+    public static void GreenForeGroundColor()
     {
         if (ForegroundColor != ConsoleColor.Green)
             ForegroundColor = ConsoleColor.Green;
+    }
+    public static int CalculateFibonacci(int fibNum)
+    {
+        if (fibNum < 2)
+            return fibNum; ;
+        return CalculateFibonacci(fibNum - 1) + CalculateFibonacci(fibNum - 2);
+    }
+    public static int[] BubbleSort(int[] inputArray)
+    {
+        int swapHolder;
+        for (int j = 0; j < Math.Pow(inputArray.Length, 2); j++)
+        {
+            for (int i = 0; i < inputArray.Length - 1; i++)
+            {
+                if (inputArray[i] > inputArray[i + 1])
+                {
+                    swapHolder = inputArray[i];
+                    inputArray[i] = inputArray[i + 1];
+                    inputArray[i + 1] = swapHolder;
+                }
+            }
+        }
+        return inputArray;
     }
 }
 
