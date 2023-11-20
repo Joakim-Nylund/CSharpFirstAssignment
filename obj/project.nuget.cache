@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "5pB6cbl5cVMPvqdKzMDrvg/3hy7ghBZe2DQOlU8X5p3J9Qs1kuW2L1agUKJr5/41nnU/OWpi6YKRWV5ANh2Z7g==",
+  "dgSpecHash": "cn31CrocC+wF6NnicabjGKC5FnQPmXUL4/j++5tzddprU0rmv6IA1k54DtUigi9vJdZ2UkhBmGTTUNxu/+BUWA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Student\\source\\repos\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "E:\\Joakim\\Documents\\VSCodeprogram\\C_Sharp_Core6_Basic_First_Assignment\\CSharpFirstAssignment\\CSharpFirstAssignment.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Joakims inloggning\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Joakims inloggning\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Joakims inloggning\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Joakims inloggning\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,12 +1,12 @@
 ﻿using System.Buffers;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
-using static ExerciseClass; //I added this.
+using static ExerciseClass; //I added this class
 using static System.Console;
 using static System.Convert;
-using static System.StringComparison;
 
 static void RunExerciseOne()
 {
@@ -552,50 +552,68 @@ static void RunExerciseThirtyOne()
 
 static void RunExerciseThirtyTwo()
 {
-    // Write("Insert a string of comma-separated number: ");
-    // string[] numberSnippets = ReadLine()!.Split(',');
-    // int[] numbers = numberSnippets.Select(x => int.Parse(x)).ToArray();
+    Write("Insert a string of comma-separated numbers: ");
 
-    //alternatively
+    //alt 1
+    string[] numberSnippets = ReadLine()!.Split(',');
+    int[] numbers = numberSnippets.Select(x => int.Parse(x)).ToArray();
+
+
+    //alt 2
+    // string[] numberSnippets = ReadLine()!.Split(',');
     // int[] numbers = new int[numberSnippets.Length];
     // for (int i = 0; i < numberSnippets.Length; i++)
     //     numbers[i] = int.Parse(numberSnippets[i]);
 
 
-    //alternative using StringBuilder
-    Write("Insert a string of comma-separated numbers: ");
-    char[] numberChars = ReadLine()!.ToCharArray();
+    //alternative 3 : using ToCharArray(), then StringBuilder, then string and lastly int[] - seems clumsy
+    // char[] numberChars = ReadLine()!.ToCharArray();
 
-    StringBuilder numberBuilder = new();
-    for (int i = 0; i < numberChars.Length; i++)
-        numberBuilder.Append(numberChars[i]);
+    // StringBuilder numberBuilder = new();
+    // for (int i = 0; i < numberChars.Length; i++)
+    //     numberBuilder.Append(numberChars[i]);
 
-    string builtString = numberBuilder.ToString();
-    WriteLine("\nIn a string: " + builtString);
+    // string builtString = numberBuilder.ToString();
+    // int[] numbers = new int[builtString.Where(x => x == ',').Count() + 1]; //cardinality of numbers is always that of #commas + 1
 
-    // string[]  maybe it's possible to skip the string[] step. Simply assign the elements of an int[] to different substrings parsed as integers?
-
-    int startIndex = 0;
-    int arrayIndex = 0;
-    int[] numbers = new int[builtString.Where(x => x == ',').Count()];
-    do
-    {
-        numbers[arrayIndex++] = int.Parse(builtString.Substring(startIndex, builtString.IndexOf(','))); //
-        builtString = builtString.Substring(startIndex, builtString.IndexOf(','));
-        startIndex = int.Parse(builtString.Substring(startIndex, builtString.IndexOf(','))); //sets the startIndex past the current comma
-        //I have to assign it to the substring to avoid recursive statements inside int.Parse()
-
-    } while (startIndex != builtString.LastIndexOf(','));
-
-    WriteLine("int[] numbers: " + string.Join(" ", numbers));
+    // for (int i = 0; i < numbers.Where(x => x != ',').Count(); ++i)
+    // {
+    //     if (builtString.Contains(','))
+    //     {
+    //         numbers[i] = int.Parse(builtString[..builtString.IndexOf(',')]);
+    //         builtString = builtString.Substring(builtString.IndexOf(',') + 1, builtString.Length - builtString.IndexOf(',') - 1);
+    //     }
+    //     else
+    //         numbers[i] = int.Parse(builtString.Substring(0, builtString.Length));
+    // }
 
 
-    //Better alternative??????
-    // IList<string[]> numberList = new List<string[]>();    -- AsQueryable ?
+    //alt 4 - building strings with StringBuilder until ',' appears. Add the to string the int array using int.Parse.
+    // char[] numberChars = ReadLine()!.ToCharArray();
+    // StringBuilder numberBuilder = new();
+    // int[] numbers = new int[numberChars.Where(x => x == ',').Count() + 1];
 
-    // WriteLine("Lowest value is: " + numbers.Min());
-    // WriteLine("Highest value is: " + numbers.Max());
-    // WriteLine("Average value is: " + numbers.Average());
+    // int nonCommaCounter = 0;
+    // for (int i = 0; i < numberChars.Length; i++)
+    // {
+    //     if (numberChars[i] != ',')
+    //     {
+    //         numberBuilder.Append(numberChars[i]);
+    //         if (i == numberChars.Length - 1)        //last number won't be followed by a comma
+    //             numbers[nonCommaCounter] = int.Parse(numberBuilder.ToString());
+    //     }
+    //     else
+    //     {
+    //         numbers[nonCommaCounter++] = int.Parse(numberBuilder.ToString());
+    //         numberBuilder.Clear();
+    //     }
+    // }
+
+
+    // WriteLine("Inputted numbers are: " + string.Join(" ", numbers));  //useful for checking inputs.
+    WriteLine("Lowest value is: " + numbers.Min());
+    WriteLine("Highest value is: " + numbers.Max());
+    WriteLine("Average value is: " + numbers.Average());
 }
 
 static void RunExerciseThirtyThree()
@@ -603,7 +621,7 @@ static void RunExerciseThirtyThree()
     //A) Change string “The quick fox Jumped Over the DOG” to the string “The brown fox jumped over the lazy dog” using required string manipulation functions.
     string questionA = "The quick fox Jumped Over the DOG";
 
-    //Quick and efficient solution.
+    //Quick and efficient solution that "jumps" over the problem.
     WriteLine("Question A: Original text: " + questionA);
     questionA = questionA.Replace("quick fox Jumped Over the DOG", "brown fox jumped over the lazy dog");
     WriteLine("Question A: Altered text: " + questionA);
@@ -616,50 +634,69 @@ static void RunExerciseThirtyThree()
 
     //B) - Enter any two words from console and check whether they are same words or not
     Write("\nEnter the first word: ");
-    string? questionB1 = ReadLine();
+    string? questionB1 = ReadLine()!.ToLower();
     Write("Enter the second word: ");
-    string? questionB2 = ReadLine();
+    string? questionB2 = ReadLine()!.ToLower();
 
-    if (questionB1.Equals(questionB2, StringComparison.InvariantCultureIgnoreCase))
+    // if (questionB1!.Equals(questionB2, StringComparison.InvariantCultureIgnoreCase))
+    if (questionB1 == questionB2)
         WriteLine("They are the same word!");
     else
         WriteLine("They are *not* the same word");
 
     //C) - Input word Donkey and display it as the word Monkey on the console.
+    Write("\nTap enter to see the next part of the exercise ");
+    ReadKey();
+
     string questionC = "Donkey";
-    WriteLine("\nQuestion C: Original text: " + questionC);
+    WriteLine("\n\nQuestion C: Original text: " + questionC);
     questionC = questionC.Replace("D", "M");
     WriteLine("Question C: Altered text: " + questionC);
 
     // D) Replace ‘I’ with ‘We’ and ‘am’ with ‘are’ in given text below.
-    string questionD = "I am going to visit Kolmården zoo tomorrow. I am a big fan of the dolphin show. I may watch all dolphin shows during the day. I would like to take a gondola safari as well. I wish to visit Bamse and his team there.";
+    Write("\nTap enter to see the next part of the exercise ");
+    ReadKey();
 
-    WriteLine("\nQuestion D: Original text: " + questionD);
-    questionD = questionD.Replace("a big fan", "big fans").Replace("I", "We").Replace("am", "are");
+    string questionD = "I am going to visit Kolmården zoo tomorrow. I am a big fan of the dolphin show. I may watch all dolphin shows during the day. I would like to take a gondola safari as well. I wish to visit Bamse and his team there.";
+    WriteLine("\n\nQuestion D: Original text: " + questionD);
+    WriteLine(questionD.Substring(questionD.IndexOf('B')));
+    questionD = questionD.Substring(0, questionD.IndexOf('B')).Replace("a big fan", "big fans").Replace("I", "We").Replace("am", "are") + questionD.Substring(questionD.IndexOf('B'));
     WriteLine("Question D: Altered text: " + questionD);
 
     //E) Actual string is "She is the popular singer." and the expected string is "She is the most popular singer."
+    Write("\nTap enter to see the next part of the exercise ");
+    ReadKey();
+
     string questionE = "She is the popular singer.";
-    WriteLine("\nQuestion E: Original text: " + questionE);
+    WriteLine("\n\nQuestion E: Original text: " + questionE);
     questionE = questionE.Replace("the", "the most");
     WriteLine("Question E: Altered text: " + questionE);
 
     //F) Actual string is "A friend is the asset of your life." and the expected string is "A true friend is the greatest asset of your life"
+    Write("\nTap enter to see the next part of the exercise ");
+    ReadKey();
+
     string questionF = "A friend is the asset of your life.";
-    WriteLine("\nQuestion F: Original text: " + questionF);
+    WriteLine("\n\nQuestion F: Original text: " + questionF);
     questionF = questionF.Remove(questionF.IndexOf('.'), 1).Replace("A", "A true").Replace("the", "the greatest");
     WriteLine("Question F: Altered text: " + questionF);
 
     //G) Actual string is "My name is Nalini Phopase." Expected string: "Nalini Phopase"
-    string questionG = "My name is Nalini Phopase.";
-    WriteLine("\nQuestion G: Original text: " + questionG);
-    // questionG = questionG.Remove(questionG.IndexOf('.'), 1).Substring(questionG.IndexOf('N'));
-    questionG = questionG.Remove(questionG.IndexOf('.'), 1)[questionG.IndexOf('N')..];
+    Write("\nTap enter to see the next part of the exercise ");
+    ReadKey();
+
+    string questionG = "My name is Joakim Nylund.";
+    WriteLine("\n\nQuestion G: Original text: " + questionG);
+    // questionG = questionG.Remove(questionG.IndexOf('.'), 1)[11..]; ;
+    questionG = questionG.Remove(questionG.IndexOf('.'), 1)[questionG.IndexOf('J')..]; ;
     WriteLine("Question G: Altered text: " + questionG);
 
     //H) Actual string is "Arrays are very common in programming, they look something like: [1,2,3,4,5]" Expected string: "[1,4,5,6,7,8]"*/
+    Write("\nTap enter to see the next part of the exercise ");
+    ReadKey();
+
     string questionH = "Arrays are very common in programming, they look something like: [1,2,3,4,5]";
-    WriteLine("\nQuestion H: Original text: " + questionH);
+    WriteLine("\n\nQuestion H: Original text: " + questionH);
     questionH = questionH[questionH.IndexOf('[')..];
     // questionH = questionH.Substring(questionH.IndexOf('['));
     WriteLine("Question H: Altered text: " + questionH);
@@ -667,24 +704,21 @@ static void RunExerciseThirtyThree()
 
 static void RunExerciseThirtyFour()
 {
-    Write("Enter your date of birth (format: yyyy-mm-dd): ");
+    Write("Enter your date of birth: ");
     string? dateOfBirthString34 = ReadLine();
-    int? age = ExerciseClass.CalculateAge(dateOfBirthString34!);
+    int? age = CalculateAge(dateOfBirthString34!);
     WriteLine($"You are {age} years old");
-
-    //add .Weekday and say "you were born on a {dateOfBirth.Weekday} and are x years old". ?
 }
 
 static void RunExerciseThirtyFive()
 {
     Write("Enter your full name: ");
-    string[] firstAndLastName = ReadLine()!.Split(" "); //format Firstname Lastname - add local-culture compatibility??
+    string[] firstAndLastName = ReadLine()!.Split(" ");
     Write($"Greetings {firstAndLastName[0]} {firstAndLastName[1]}, when were you born? ");
     string? birthDate = ReadLine();
 
     Customer newCustomer = new(birthDate!, firstAndLastName[0] + " " + firstAndLastName[1]);
     BarCounter newCustomerTab = new(newCustomer);
-    // WriteLine(newCustomer.IsOfDrinkingAge);
 }
 
 static void RunExerciseThirtySix()
@@ -708,8 +742,10 @@ static void RunExerciseThirtySix()
             else if (j * i >= 10)
                 Write(" " + j * i);
             else if (j * i < 10)
-                Write("  " + j * i); //make one line with - //Write($"randomWords{variableName, -3}; \t    ? 
+                Write("  " + j * i);
 
+            //all 3 conditional statements above in this for-loop can be replaced by the row below.
+            // Write($"{j * i,3}"); //this apparently fills up a maximum of 3 spaces as a "buffer", reduced by the number of places filled by the output.
             if (i == 10)
                 Write("|");
         }
@@ -911,14 +947,11 @@ public class ExerciseClass
     }
     public static int CalculateAge(string dateOfBirthString)
     {
-        //add ability to enter in any format
-        // string[] dateTimeVariantsToday = now.GetDateTimeFormats();
-
         DateTime dateOfBirth = ToDateTime(dateOfBirthString);
         DateTime now = DateTime.Now;
 
         int age;
-        if (dateOfBirth.Month < now.Month || (dateOfBirth.Month == now.Month && dateOfBirth.Day <= now.Day)) //either a previous month, or a previous day/the same day the same month
+        if (dateOfBirth.Month < now.Month || (dateOfBirth.Month == now.Month && dateOfBirth.Day <= now.Day)) //either a previous month, or (a previous day)/(the same day) the same month
             age = now.Year - dateOfBirth.Year;
         else
             age = now.Year - dateOfBirth.Year - 1;
@@ -973,7 +1006,7 @@ public class BarCounter
 
     public BarCounter(Customer customer)
     {
-        if (customer.IsOfDrinkingAge == true)
+        if (customer.Age >= LocalJurisdiction.legalDrinkingAge)
             GetOrder(allBeverages);
         else
             GetOrder(childBeverages);
@@ -983,9 +1016,9 @@ public class BarCounter
         for (int i = 0; i < beverages.Length; i++)
         {
             Write("Do you want to order a " + beverages[i] + ": ");
-            CustomerAnswer = ReadLine();
+            CustomerAnswer = ReadLine()!;
 
-            if (CustomerAnswer!.ToUpper() == "YES")
+            if (CustomerAnswer.ToLower() == "yes")
             {
                 ServeOrder(beverages[i]);
                 break;
@@ -1000,13 +1033,7 @@ public class BarCounter
 public class Customer //inheritance from ExerciseClass is not needed to use the CalculateAge method because of "using static ExerciseClass;"
 {
     public string Name { get; set; }
-    private readonly int Age;
-    private bool isOfDrinkingAge;
-    public bool IsOfDrinkingAge
-    {
-        get { return isOfDrinkingAge; }
-        set { isOfDrinkingAge = Age > LocalJurisdiction.legalDrinkingAge; }
-    }
+    public readonly int Age;
     public Customer(string birthDateString, string name = "anonymous customer")
     {
         Name = name;
